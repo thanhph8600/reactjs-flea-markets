@@ -1,7 +1,8 @@
 import Sidebar from "../../components/admin/sidebar.admin.component"
 import Header from "../../components/admin/header.admin.component"
+import { Outlet } from "react-router-dom"
 
-const AdminLayout = ({chirden}:{chirden:React.ReactNode}) => {
+const AdminLayout = () => {
     return (
         <>
             <div className="flex">
@@ -14,7 +15,7 @@ const AdminLayout = ({chirden}:{chirden:React.ReactNode}) => {
                             <Header />
                         </div>
                         <div className="px-4 py-2">
-                            {chirden}
+                            <Outlet />
                         </div>
                     </div>
                 </div>

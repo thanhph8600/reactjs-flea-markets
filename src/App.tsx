@@ -1,12 +1,21 @@
-import './App.css'
-
-import { RouterProvider} from "react-router-dom";
-import { PrivateRoutes } from './routers';
+import { InfoUserProvider } from './hook/admin/contexts';
+import CategoryProvider from './hook/admin/contexts/categories';
+import ListUserProvider from './hook/admin/contexts/listUser';
+import LoaderProvider from './hook/admin/contexts/loader';
+import { Router } from './routers';
 
 function App() {
 
   return (
-    <RouterProvider router={PrivateRoutes()} />
+    <LoaderProvider>
+        <InfoUserProvider>
+            <ListUserProvider>
+              <CategoryProvider>
+                <Router />
+              </CategoryProvider>
+            </ListUserProvider>
+        </InfoUserProvider>
+    </LoaderProvider>
   )
 }
 
