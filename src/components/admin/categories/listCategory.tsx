@@ -56,15 +56,14 @@ const ListCategory = () => {
         requestApi('category', 'POST', body).then(() => {
           onSuccecc();
         },error => {
-          console.log(error);
-          toast.error('Thêm danh mục thất bại');
+          error.response.data.message && toast.error(error.response.data.message)
         })
       } else {
         requestApi(`category/${_id}`, 'PATCH', body).then(() => {
           onSuccecc();
         },error => {
           console.log(error);
-          toast.error('Sửa danh mục thất bại');
+          error.response.data.message && toast.error(error.response.data.message)
         })
       }
     }
@@ -74,7 +73,13 @@ const ListCategory = () => {
     toast.success('Thành công');
     handlePopup();
   }
-
+  const onDelete = (id:string) => {
+      requestApi(`category/${id}`, 'DELETE',{}).then(() => {
+        onSuccecc()
+    }, error => {
+        console.log(error);
+    })
+  }
   return (
     <div>
       {showPopup && <Popup onHandlePopup={handlePopup}>
@@ -88,8 +93,8 @@ const ListCategory = () => {
                 <table className="min-w-full text-left text-sm font-light">
                   <thead className="border-b font-medium dark:border-neutral-500">
                     <tr>
-                      <th scope="col" className="px-6 py-4">Thumbnail</th>
-                      <th scope="col" className="px-6 py-4">name</th>
+                      <th scope="col" className="px-6 py-4">Hình ảnh</th>
+                      <th scope="col" className="px-6 py-4">Tên danh mục</th>
                       <th scope="col" className="px-6 py-4"></th>
                       <th scope="col" className="px-6 py-4"></th>
                       <th scope="col" className="px-6 py-4">
@@ -105,7 +110,7 @@ const ListCategory = () => {
                   </thead>
                   <tbody>
                     {listCategory.map((item: Category, index) => {
-                      return <ItemCategory key={index} setIsEdit={setIsEdit} setFormCategory={setFormCategory} category={item} onHandlePopup={handlePopup} />
+                      return <ItemCategory key={index} setIsEdit={setIsEdit} setFormCategory={setFormCategory} category={item} onHandlePopup={handlePopup} onDelete={onDelete} />
                     })}
                   </tbody>
                 </table>

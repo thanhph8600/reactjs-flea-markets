@@ -16,14 +16,14 @@ const EditCategory = ({ value, onHandlePopup, onHandleFrom, onSubmid,errorForm}:
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
-                <h1 className="text-2xl font-semibold">Category</h1>
+                <h1 className="text-2xl font-semibold">Danh mục</h1>
                 <p className=" text-red-500 pt-1">{errorForm}</p>
                 <div className="mt-4">
-                    <label className="block mb-2">Name</label>
+                    <label className="block mb-2">Tên</label>
                     <input type="text" onChange={(e)=>{onHandleFrom(e)}} name="name" className="w-full border border-gray-300 rounded-md p-2" value={value.name} />
                 </div>
                 <div className="mt-4">
-                    <label className="block mb-2">Thumbnail</label>
+                    <label className="block mb-2">Địa chỉ hình ảnh</label>
                     <input type="text" onChange={(e)=>{
                         onHandleFrom(e)
                         setShowImage(e.target.value)

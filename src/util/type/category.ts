@@ -9,7 +9,8 @@ export type CategoryDetail = {
     id_category: string,
     name: string,
     thumbnail: string,
-    frameSpecifications: object
+    specification: Array<string>,
+    link: string
 }
 export const defaultValueCategory = {
     _id: '',
@@ -22,5 +23,6 @@ export const defaultValueCategoryDetail = {
     id_category: '',
     name: '',
     thumbnail: '',
-    frameSpecifications: {}
+    specification: [''],
+    link: ''
 }

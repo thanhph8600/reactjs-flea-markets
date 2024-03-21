@@ -4,11 +4,13 @@ import { FaEye } from "react-icons/fa";
 import { Dispatch, SetStateAction, useState } from "react";
 import Popup from "../popup";
 import DeleteCategory from "./deleteCategory";
-const ItemCategory = ({ category, onHandlePopup, setIsEdit, setFormCategory }: {
+import { Link } from 'react-router-dom'
+const ItemCategory = ({ category, onHandlePopup, setIsEdit, setFormCategory, onDelete }: {
     category: Category,
     onHandlePopup: () => void,
     setIsEdit: Dispatch<SetStateAction<boolean>>,
     setFormCategory: Dispatch<SetStateAction<Category>>
+    onDelete: (id: string) => void
 }) => {
     const [showPopup, setShowPopup] = useState(false);
     const [infoCategory, setInfoCategory] = useState(defaultValueCategory);
@@ -40,7 +42,7 @@ const ItemCategory = ({ category, onHandlePopup, setIsEdit, setFormCategory }: {
                     </button>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4">
-                    <button className="px-4 py-2 rounded bg-blue-500 text-white flex gap-2 items-center">Chi tiết <FaEye /> </button>
+                    <Link to={`/admin/danh-muc-chi-tiet/${category.link}`} className=" w-fit px-4 py-2 rounded bg-blue-500 text-white flex gap-2 items-center">Chi tiết <FaEye /> </Link>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4">
                     <button onClick={() => handleDelete(category)} className="px-4 py-2 rounded bg-red-500 text-white flex gap-2 items-center">Xóa <MdDelete /> </button>
@@ -48,7 +50,7 @@ const ItemCategory = ({ category, onHandlePopup, setIsEdit, setFormCategory }: {
             </tr>
             {showPopup &&
                 <Popup onHandlePopup={handlePopup}>
-                    <DeleteCategory category={infoCategory} onCancelPopup={cancelPopup}/>
+                    <DeleteCategory category={infoCategory} onCancelPopup={cancelPopup} onDelete={onDelete} />
                 </Popup>}
         </>
     )
