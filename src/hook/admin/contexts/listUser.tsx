@@ -11,7 +11,6 @@ const ListUserProvider = ({ children }: { children: React.ReactNode }) => {
     const { infoUser } = useContext(infoUserContext)
     useEffect(() => {
         if(infoUser.role === 'admin') {
-                console.log('effect');
                 const effectListUser = async () => {
                     const data = await GetListUser()
                     setListUser(data)

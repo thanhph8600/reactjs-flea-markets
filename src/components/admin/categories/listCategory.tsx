@@ -76,6 +76,7 @@ const ListCategory = () => {
   const onDelete = (id:string) => {
       requestApi(`category/${id}`, 'DELETE',{}).then(() => {
         onSuccecc()
+        setShowPopup(false)
     }, error => {
         console.log(error);
     })

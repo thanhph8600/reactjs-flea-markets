@@ -1,0 +1,21 @@
+.slick-initialized button::before {
+    color: rgb(107, 95, 95);
+}
+.slick-initialized button:first-child {
+    left: -10px;
+}
+.slick-initialized button:nth-child(3) {
+    right: -10px;
+}
+
+.skeleton {
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+@keyframes skeleton-loading {
+    0%{
+        background-color: hsl(200, 20%, 70%);
+    }
+    100%{
+        background-color: hsl(200, 20%, 95%);
+    }
+}

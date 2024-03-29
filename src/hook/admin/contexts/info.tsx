@@ -11,7 +11,6 @@ export const InfoUserProvider = ({ children }: { children: React.ReactNode }) =>
     const token = getToken('access_token')
     useEffect(() => {
         if (token) {
-            console.log('get info user');
             const effectInfoUser = async () => {
                 const data = await GetInfoUser()
                 setInfoUser(data)
@@ -29,7 +28,8 @@ export const GetInfoUser = async () => {
     const res = await requestApi('auth/profile', 'GET', {})
     return res.data
 }
-const defaultUser = {
+// eslint-disable-next-line react-refresh/only-export-components
+export const defaultUser = {
     username: '',
     phone: '',
     role: '',

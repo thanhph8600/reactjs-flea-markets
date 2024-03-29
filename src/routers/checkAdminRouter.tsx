@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GetInfoUser } from '../hook/admin/contexts/info';
 import { getToken } from '../util';
+import { LoaderContex } from '../hook/admin/contexts/loader';
 
 export const AdminPrivateRouter = () => {
     const [infoUser, setInfoUser] = useState(defaultUser);
@@ -20,11 +21,13 @@ export const AdminPrivateRouter = () => {
             setInfoUser(defaultUser);
         }
     }, [token]);
-    console.log(infoUser);
     
+    const { setLoader } = useContext(LoaderContex);
     if (loading) {
-        return <div>Loading...</div>;
+        setLoader(true)
+        return ;
     }
+    setLoader(false)
     return infoUser.role == 'admin' ? <Outlet /> : <Navigate to="/admin/login" />;
 }
 export const AdminPubliceRouter = () => {
@@ -45,9 +48,12 @@ export const AdminPubliceRouter = () => {
         }
     }, [token]);
     
+    const { setLoader } = useContext(LoaderContex);
     if (loading) {
-        return <div>Loading...</div>;
+        setLoader(true)
+        return ;
     }
+    setLoader(false)
     return (infoUser.role != 'admin' ? <Outlet /> : <Navigate to="/admin" />)
 }
 

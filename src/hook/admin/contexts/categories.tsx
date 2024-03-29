@@ -5,12 +5,14 @@ import requestApi from "../../../helper/api";
 // eslint-disable-next-line react-refresh/only-export-components
 export const categoryContext = createContext({} as {
     listCategory: Category[], 
+    listCategoryDetail: CategoryDetail[]
     setListCategory: React.Dispatch<React.SetStateAction<Category[]>>,
     callAPI: () => void,
     getListCategoryDetailBySlug: (slug:string) => CategoryDetail[],
     getCategoryBySlug: (slug:string) => Category,
     specification: Specification[],
     getSpecification: () => void,
+    getCategoryDetailBySlug: (slug:string) => CategoryDetail,
 } )
 
 const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
@@ -27,6 +29,14 @@ const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
         const idCategory = listCategory.find(item => item.link === slug)?._id
         const data = listCategoryDetail.filter(item => item.id_category === idCategory)
         return data
+    }
+    const getCategoryDetailBySlug = (slug:string) => {
+        const data = listCategoryDetail.find(item => item.link === slug)
+        if (data){
+            return data
+        }else {
+            return defaultValueCategoryDetail
+        }
     }
     const getCategoryBySlug = (slug:string) => {
         const category = listCategory.find(item => item.link === slug)
@@ -47,12 +57,14 @@ const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <categoryContext.Provider value={{ 
             listCategory, 
+            listCategoryDetail,
             setListCategory, 
             callAPI, 
             getListCategoryDetailBySlug, 
             getCategoryBySlug,
             specification,
-            getSpecification
+            getSpecification,
+            getCategoryDetailBySlug
             }}>
                 {children}
         </categoryContext.Provider>

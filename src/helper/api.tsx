@@ -10,11 +10,17 @@ export default function requestApi(
     endpoint: string, 
     method: string, 
     body: object, 
+    contenType?: string,
     responseType: AxiosRequestConfig['responseType'] = 'json'
 ) {
     const url = 'http://localhost:3000/'
+    if(contenType){
+        defaultHeaders["Content-Type"] = contenType
+    }
     const token = localStorage.getItem('access_token');
     const headers = token ? { ...defaultHeaders, "Authorization": `Bearer ${token}` } : { ...defaultHeaders };
+    
+
     const instance = axios.create({ headers });
     
     instance.interceptors.response.use((response) => {
@@ -37,7 +43,7 @@ export default function requestApi(
             } catch (err) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
-                window.location.href = '/admin/login';
+                window.location.href = '/';
                 return Promise.reject(err);
             }
         }
