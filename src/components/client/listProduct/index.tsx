@@ -12,12 +12,20 @@ import FilterProduct from "./filter/filter";
 const ListProductClient = () => {
   const navigate = useNavigate()
   const { slug } = useParams()
-  const { getCategoryBySlug, getListCategoryDetailBySlug, listCategory, listCategoryDetail } = useContext(categoryContext)
+  const { 
+    getCategoryBySlug, 
+    getListCategoryDetailBySlug, 
+    listCategory, 
+    listCategoryDetail,
+    getIdCategoryOrCategoryDetailBySlug
+   } = useContext(categoryContext)
   const [category, setCategory] = useState({} as Category | CategoryDetail )
   const [listCategoryDetailShow, setListCategoryDetailShow] = useState([] as CategoryDetail[])
   const [showCategoryDetail, setShowCategoryDetail] = useState(true)
+  const [idCategory, setIdCategory] = useState('')
   useEffect(() => {
     if (slug) {
+      setIdCategory(getIdCategoryOrCategoryDetailBySlug(slug))
       const cateDetail = getListCategoryDetailBySlug(slug)
       const itemCategory = getCategoryBySlug(slug)
       if (cateDetail.length != 0){
@@ -32,7 +40,7 @@ const ListProductClient = () => {
         }
       }
     }
-  }, [getCategoryBySlug, getListCategoryDetailBySlug, listCategory, listCategoryDetail, navigate, slug])
+  }, [getCategoryBySlug, getIdCategoryOrCategoryDetailBySlug, getListCategoryDetailBySlug, listCategory, listCategoryDetail, navigate, slug])
 
   return (
     <>
@@ -60,7 +68,7 @@ const ListProductClient = () => {
           </div>}
 
           <div className=" pb-2">
-            <SectionListProduct />
+            {idCategory && <SectionListProduct idCate={idCategory} />}
           </div>
           
         </div>

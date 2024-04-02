@@ -1,14 +1,16 @@
 export type User = {
-    id: object,
+    _id: string,
     name: string,
     email: string,
     phone: string,
-    role: number
+    role: number,
+    avata: string,
 }
 export const defaultValueUser = {
-    id: {},
+    _id: '',
     name: '',
     email: '',
     phone: '',
-    role: 0
+    role: 0,
+    avata: ''
 }

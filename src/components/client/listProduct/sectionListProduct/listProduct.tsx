@@ -1,11 +1,14 @@
 import { FaList } from "react-icons/fa"
 import { IoGrid } from "react-icons/io5"
-import ItemProductGrid from "./itemProductGrid"
+import ItemProductGrid, { ItemProductGridLoading } from "./itemProductGrid"
 import { useState } from "react"
-import ItemProductCol from "./itemProductCol"
+import ItemProductCol, { ItemProductColLoading } from "./itemProductCol"
+import { useGetProductByIdCategoryQuery } from "../../../../redux/rtkQuery/productQuery"
 
-const SectionListProduct = () => {
+const SectionListProduct = ({ idCate }: { idCate: string }) => {
     const [showListGrid, setShowListGrid] = useState(true)
+    const { data: products, isLoading, isSuccess, isFetching } = useGetProductByIdCategoryQuery(idCate)
+    
     return (
         <div className="bg-white shadow-sm rounded-sm ">
             <div className="p-2 border-b border-gray-100">
@@ -31,28 +34,21 @@ const SectionListProduct = () => {
                 </div>
                 {showListGrid ?
                     <div className="grid grid-cols-3">
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
-                        <ItemProductGrid />
+                        {isLoading || isFetching ? 
+                            <ItemProductGridLoading length={3} />
+                            :
+                            isSuccess && products.map((item) => {
+                                return <ItemProductGrid key={item._id} itemProduct={item} />
+                            })
+                        }
                     </div> :
                     <div className="">
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
-                        <ItemProductCol />
+                        {isLoading || isFetching ? 
+                            <ItemProductColLoading  length={5}/> :
+                            isSuccess && products.map((item) => {
+                            return <ItemProductCol key={item._id} itemProduct={item} />
+                        })
+                        }
                     </div>
                 }
 

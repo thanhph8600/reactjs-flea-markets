@@ -13,6 +13,7 @@ export const categoryContext = createContext({} as {
     specification: Specification[],
     getSpecification: () => void,
     getCategoryDetailBySlug: (slug:string) => CategoryDetail,
+    getIdCategoryOrCategoryDetailBySlug: (slug: string) => string
 } )
 
 const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
@@ -50,6 +51,16 @@ const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
         const data = await GetSpecification()
         setSpecification(data)
     }
+    const getIdCategoryOrCategoryDetailBySlug = (slug:string) => {
+        let data = listCategory.find((item) => item.link === slug)
+        if(!data) {
+            data = listCategoryDetail.find((item) => item.link === slug)
+        }
+        if(data){
+            return data._id
+        }
+        return '';
+    }
     useEffect(() => {
         callAPI()
         getSpecification()
@@ -64,7 +75,8 @@ const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
             getCategoryBySlug,
             specification,
             getSpecification,
-            getCategoryDetailBySlug
+            getCategoryDetailBySlug,
+            getIdCategoryOrCategoryDetailBySlug
             }}>
                 {children}
         </categoryContext.Provider>

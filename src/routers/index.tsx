@@ -20,6 +20,7 @@ import DetailCustomer from '../components/client/customer/detailCustomer';
 import Login from '../components/client/login/login';
 import Register from '../components/client/login/register';
 import AddProduct from '../components/client/addProduct/addProduct';
+import EditProduct from '../components/client/editProduct/editProduct';
 const Router = () => {
   return (
     <Routes>
@@ -35,6 +36,7 @@ const Router = () => {
           </Route>
           <Route element={<ClientPrivateRouter />} >
             <Route path="/dang-tin" element={<AddProduct />} />
+            <Route path="/cap-nhat-tin/:idProduct" element={<EditProduct />} />
           </Route>
         </Route>
         <Route path="/404-not-found" element={<NotFoundPage />} />

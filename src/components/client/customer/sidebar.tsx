@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { useGetCustomerByIDQuery } from "../../../redux/rtkQuery/customer"
+import { useGetCustomerByIDQuery } from "../../../redux/rtkQuery/customerQuery"
 import '../../../assets/slideHome.css'
 const SidebarCustomer = () => {
     const { id } = useParams()

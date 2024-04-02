@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import SelectImage from "./selectImage"
 import InfoAddProduct from "./infoProduct/detailProduct"
 import Popup from "../../admin/popup";
-import DemoProduct from "./demoProduct";
+import DemoProduct from "../detailProduct/demoProduct";
 import requestApi from "../../../helper/api";
 import { LoaderContex } from "../../../hook/admin/contexts/loader";
 import { infoUserContext } from "../../../hook/admin/contexts";
@@ -91,7 +91,12 @@ const AddProduct = () => {
             setErrorFile('Chọn ít nhất 1 ảnh')
             return
         }
-        if (dataForm) setFormDataProduct(dataForm)
+
+        if (dataForm) {
+            
+            dataForm.thumbnail = prevImages.map((item)=>{return item.preview})
+            setFormDataProduct(dataForm)
+        }
         setShowDemo(!showDemo)
     }
     return (
@@ -111,7 +116,9 @@ const AddProduct = () => {
                             </div>
                         </div>
                         {showDemo && <Popup onHandlePopup={handlePopup}>
-                            <DemoProduct formDataProduct={formDataProduct} prevImages={prevImages} />
+                            <div className=" min-w-[700px] max-h-screen overflow-y-auto">
+                                <DemoProduct product={formDataProduct} />
+                            </div>
                         </Popup>}
                     </div>
                 </div>

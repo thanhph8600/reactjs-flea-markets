@@ -48,6 +48,13 @@ export function convertToSlug(str: string): string {
 
     return filteredString || '';
 }
-
-
+export function formatCurrency(amount:string|number) {
+    amount = Number(amount)
+        let formattedAmount = amount.toFixed(0).replace(/\d(?=(\d{3})+$)/g, '$&,');
+        
+        // Append đồng symbol
+        formattedAmount += " đ";
+        
+        return formattedAmount;
+}
 export { validePhone, validePassword }

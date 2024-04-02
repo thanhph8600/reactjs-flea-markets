@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import SectionCategory from "./sectionCategory"
-import SectionNewPost from "./sectionNewPost"
+import SectionNewProduct from "./sectionNewProduct"
 import SlideHome from "./slideHome"
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
                 </div>
                     
                 <div className="pb-2">
-                    <SectionNewPost />
+                    <SectionNewProduct />
                 </div>
             </div>
         </>

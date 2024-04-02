@@ -55,7 +55,10 @@ const InfoAddProduct = ({onHandleCategory,onSubmitForm,onHandleShowdemo}:{
         error.description = validateFormDescription(dataForm.description);
         if(!dataForm.price){
             error.price = 'Bạn phải điền giá bán';
-        }else {
+        } else if ( Number(dataForm.price) < 0) {
+            error.price = 'Giá tiền phải lớn hơn 0';
+        }
+        else {
             error.price = '';
         }
         if (filterAddress.address == '') {
@@ -121,7 +124,7 @@ const InfoAddProduct = ({onHandleCategory,onSubmitForm,onHandleShowdemo}:{
                     idWard: filterAddress.ward._id,
                     address: filterAddress.address
                 },
-                specification:valueSpecification
+                specifications:valueSpecification
             }
             return data
         }
@@ -164,7 +167,6 @@ const InfoAddProduct = ({onHandleCategory,onSubmitForm,onHandleShowdemo}:{
                                 </div>
                                 {!filterAddress.address && <p className=" text-xs text-red-500 pt-1"> {errorForm.address}</p>}
                                 
-
                                 {showFillterAddress && <Popup onHandlePopup={handleShow}>
                                     <div className=" z-10 top-full left-0 w-[500px] pt-2">
                                         <FillterAddress onHandleShowFillterAddress={handleShowFillterAddress} filterAddress={filterAddress}  onHandlePopup={handleShow}/>

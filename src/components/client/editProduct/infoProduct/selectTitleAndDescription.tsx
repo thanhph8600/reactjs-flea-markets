@@ -19,6 +19,7 @@ const SelectTitleAndDescription = ({ onHandleForm, validateFormTitle, validateFo
                     onBlur={() => setShowNoteTitle(false)}
                     onFocus={() => setShowNoteTitle(true)}
                     onChange={(e) => { validateFormTitle(e.target.value), onHandleForm(e) }}
+                    value={dataForm?.title}
                     type="text" name="title"
                     className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                     placeholder=" " />
@@ -42,6 +43,7 @@ const SelectTitleAndDescription = ({ onHandleForm, validateFormTitle, validateFo
             <div className="py-2 relative">
                 <textarea
                     onChange={(e) => { validateFormDescription(e.target.value), onHandleForm(e) }}
+                    value={dataForm?.description}
                     name="description"
                     className="peer h-full min-h-[200px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
                     placeholder="
@@ -63,6 +65,7 @@ const SelectTitleAndDescription = ({ onHandleForm, validateFormTitle, validateFo
                         <input
                             min={0}
                             onChange={(e) => onHandleForm(e)}
+                            value={dataForm?.price}
                             type="number" name="price"
                             className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                             placeholder=" " />

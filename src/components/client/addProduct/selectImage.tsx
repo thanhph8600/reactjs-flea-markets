@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { MdRemoveCircle } from "react-icons/md";
-import requestApi from "../../../helper/api";
 
 const SelectImage = ({onHandleFile, onHandlePrevImages, prevImages, listFile}: {
     onHandleFile: (files:File[])=> void
@@ -9,6 +8,7 @@ const SelectImage = ({onHandleFile, onHandlePrevImages, prevImages, listFile}: {
     prevImages: {preview: string}[]
     listFile: File[]
 }) => {
+    
     const [errorFile, setErrorFile] = useState('')
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,28 +40,12 @@ const SelectImage = ({onHandleFile, onHandlePrevImages, prevImages, listFile}: {
         onHandlePrevImages(newArrShow)     
         onHandleFile(newArrFile)
     }
-    const handleUpload = () => {
-        const formData = new FormData();
-        listFile.forEach((image: File) => {
-            formData.append('files', image); 
-        });
-        
-        requestApi('upload/arr-files','POST', formData, 'multipart/form-data' )
-        .then(response => {
-          // Xử lý phản hồi từ máy chủ
-          console.log(response.data);
-        })
-        .catch(error => {
-          // Xử lý lỗi
-          console.error('Error uploading files: ', error);
-        });
-      };
     return (
         <>
             <h4 className=" text-base font-semibold">Hình ảnh sản phẩm</h4>
             <p className=" text-base pt-3 text-red-500">{errorFile}</p>
             <div className=" py-4">
-                {listFile.length == 0 &&
+                {prevImages.length == 0 &&
                     <div
                         onClick={() => { handleClick() }}
                         className="bg-gray-50 w-72 text-center px-4 rounded flex flex-col items-center justify-center cursor-pointer border-2 border-gray-400 border-dashed mx-auto font-[sans-serif]">
@@ -94,7 +78,7 @@ const SelectImage = ({onHandleFile, onHandlePrevImages, prevImages, listFile}: {
                     </div>
                 }
                 <div>
-                    {listFile.length > 0 &&
+                    {prevImages.length > 0 &&
                         <div className=" flex gap-2 flex-wrap">
                             <div onClick={() => { handleClick() }} className=" flex items-center justify-center text-3xl text-[#ff8800] cursor-pointer w-32 h-32 border border-dashed rounded-md border-[#ff8800]">
                             <input
@@ -124,7 +108,6 @@ const SelectImage = ({onHandleFile, onHandlePrevImages, prevImages, listFile}: {
                     </div>
                     }
                 </div>
-                <button onClick={()=>handleUpload()}>upload</button>
             </div>
         </>
     )

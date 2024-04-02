@@ -31,10 +31,12 @@ export const { setDistrict, setWard } = addressSlide.actions
 
 export const getNameProvinceById = (id: string)=> {
   const itemProvince = province.data.find((item:typeProvince)=> item._id == id)
-  if (itemProvince._name){
-    return itemProvince._name
+  try {
+    return itemProvince._name    
+  } catch (error) {
+    console.log(error);
+    return '';
   }
-  return '';
 }
 export const getNameDistrictById = (id:string) => {
   const itemDistrict = district.data.find((item:typeDistrict)=> item._id == id)
@@ -49,6 +51,10 @@ export const getNameWardById = (id:string) => {
     return itemWard._name
   }
   return ''; 
+}
+
+export const  getAddress = (address:{address:string,idProvince:string, idDistrict:string, idWard: string}) => {
+    return `${address.address}, ${getNameWardById(address.idWard)}, ${getNameDistrictById(address.idDistrict)}, ${getNameProvinceById(address.idProvince)}`
 }
 
 export const SelectProvince = (state:RootState) => state.address.province
