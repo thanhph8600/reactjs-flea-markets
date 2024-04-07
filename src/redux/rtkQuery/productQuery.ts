@@ -1,14 +1,25 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TypeProduct } from '../../util'
+import { getToken, TypeProduct, TypeProductUpdate } from '../../util'
 
 export const productSlice = createApi({
   reducerPath: 'productQuery',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3000/',
+    prepareHeaders: (headers) => {
+      // Thêm các thông tin header cần thiết vào đây
+      const token = getToken('access_token');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
+  }),
   endpoints: builder => ({
     getAllProduct: builder.query<TypeProduct[], void>({
       query: () => 'product'
     }),
-    getProductByID: builder.query({
+    getProductByID: builder.query<TypeProductUpdate, void>({
       query: productId => `/product/${productId}`
     }),
     getProductByIdCategory: builder.query<TypeProduct[], string>({
@@ -17,6 +28,12 @@ export const productSlice = createApi({
     getProductByIdCategoryDetail: builder.query<TypeProduct[], string>({
       query: categoryDetailId => `/product/category-detail/${categoryDetailId}`
     }),
+    getProductBySearch: builder.query<TypeProduct[], string>({
+      query: search => `/product/search-product/${search}`
+    }),
+    getProductByCusomter: builder.query<TypeProduct[], void>({
+      query: () => `/product/customer/auto`
+    }),
   })
 })
 
@@ -24,5 +41,7 @@ export const {
   useGetAllProductQuery, 
   useGetProductByIDQuery, 
   useGetProductByIdCategoryQuery, 
-  useGetProductByIdCategoryDetailQuery 
+  useGetProductByIdCategoryDetailQuery,
+  useGetProductBySearchQuery,
+  useGetProductByCusomterQuery
 } = productSlice

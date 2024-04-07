@@ -1,13 +1,22 @@
 import { FaArrowLeft } from "react-icons/fa"
 import { district, province, ward } from "../../../../../util";
+import { useEffect, useState } from "react";
 
-const ListValueSelect = ({ title, listShow,setIsShowList, handleListShow, handleSelect }:{
-    title:string;
+const ListValueSelect = ({ title, listShow, setIsShowList, handleSelect }: {
+    title: string;
     listShow: province[] | district[] | ward[];
     setIsShowList: (value: React.SetStateAction<boolean>) => void;
-    handleListShow: (name: string) => void;
     handleSelect: (id: string, action: string) => void;
 }) => {
+    const [newListAddress, setNewListAddress] = useState([] as (province | district | ward)[])
+    useEffect(() => {
+        setNewListAddress(listShow)
+    }, [listShow])
+    const handleListShow = (value: string) => {
+        const newValue = listShow.filter((item) => item._name.toLowerCase().includes(value.toLowerCase()))
+        if(newValue)
+            setNewListAddress(newValue)
+    }
     return (
         <>
             <div className=" bg-white p-4 shadow-2xl rounded border">
@@ -19,7 +28,7 @@ const ListValueSelect = ({ title, listShow,setIsShowList, handleListShow, handle
                 <input className=" my-2 w-full p-2 rounded border " type="text" onChange={(e) => handleListShow(e.target.value)} />
                 <div className="flex flex-col overflow-x-auto h-[400px]  z-[9999]">
                     {
-                        listShow.map((item) => {
+                        newListAddress.map((item) => {
                             return (
                                 <div
                                     onClick={() => handleSelect(item.id, title)}

@@ -1,7 +1,12 @@
 import { FaChevronRight } from "react-icons/fa"
 import { useEffect, useState } from "react"
+import { MdDelete } from "react-icons/md"
 
-const SelectItemAddressJSX = ({ handleShow, name, address }: { handleShow: (address: string) => void, name: string, address: string }) => {
+const SelectItemAddressJSX = ({ handleShow, name, address, onHandleSelect }: { 
+    handleShow: (address: string) => void, 
+    name: string, address: string 
+    onHandleSelect: (id: string, action: string) => void;
+}) => {
     const [nameAddress, setNameAddress] = useState('tỉnh thành')
     useEffect(()=>{
         if(address == 'district'){
@@ -21,7 +26,10 @@ const SelectItemAddressJSX = ({ handleShow, name, address }: { handleShow: (addr
                         <p className="py-0.5 text-sm "> {name} </p>
                     </div>
                 }
-                <FaChevronRight />
+                {!name ? <FaChevronRight /> : <p onClick={(event)=>{
+                    event.stopPropagation()
+                    onHandleSelect('',nameAddress)
+                }} className=" text-lg"><MdDelete /></p>}
             </div>
         </>
     )

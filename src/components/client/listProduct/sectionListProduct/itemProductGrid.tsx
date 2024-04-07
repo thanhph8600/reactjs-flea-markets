@@ -1,20 +1,27 @@
 import { CiLocationOn } from "react-icons/ci"
 import { Link } from "react-router-dom"
-import { formatCurrency, TypeProduct } from "../../../../util"
-import { getNameProvinceById } from "../../../../redux/features/address"
+import { formatCurrency,  TypeProduct, typeValueSelectAddress} from "../../../../util"
+import { SelectDataDistrict, SelectDataWard } from "../../../../redux/features/address"
 import '../../../../assets/slideHome.css'
-const ItemProductGrid = ({ itemProduct }: { itemProduct: TypeProduct }) => {
+import { handleShowAddressByFillterAddress } from "./setProductByCategory"
+import { useAppSelector } from "../../../../redux/hook"
+const ItemProductGrid = ({ itemProduct, fillterAddress }: { itemProduct: TypeProduct, fillterAddress?: typeValueSelectAddress }) => {
+    const district = useAppSelector(SelectDataDistrict)
+    const ward = useAppSelector(SelectDataWard)
     return (
         <Link to={`/detail-product/${itemProduct._id}`} className=" hover:shadow-xl p-3 border-b cursor-pointer">
             <div className=" w-full h-40">
-                <img className=" object-cover w-full border h-40" src={`http://localhost:3000/uploads/${itemProduct.thumbnail[0]}`} alt="" />
+                <img className=" object-cover w-full border h-40" src={itemProduct.thumbnail[0]} alt="" />
             </div>
             <div className="py-2">
                 <p className=" text-sm truncate"> {itemProduct.title} </p>
                 <p className=" text-base text-red-600 font-semibold">{formatCurrency(itemProduct.price)} </p>
             </div>
             <div>
-                <p className=" text-gray-500 text-xs flex gap-1"><CiLocationOn /> {getNameProvinceById(itemProduct.address.idProvince)} </p>
+                <p className=" text-gray-500 text-xs flex gap-1">
+                    <CiLocationOn /> 
+                    {handleShowAddressByFillterAddress(itemProduct.address, fillterAddress,district,ward)}
+                </p>
             </div>
         </Link>
     )

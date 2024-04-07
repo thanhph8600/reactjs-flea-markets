@@ -15,7 +15,7 @@ const EditProduct = () => {
   const { idProduct } = useParams()
   const navigate = useNavigate()
   const { infoUser } = useContext(infoUserContext)
-  const { data: product, isSuccess } = useGetProductByIDQuery(idProduct)
+  const { data: product, isSuccess, refetch } = useGetProductByIDQuery(idProduct)
   const [prevImages, setPrevImages] = useState([] as { preview: string }[])
   const [listFile, setListFile] = useState<File[]>([])
   const [showDemo, setShowDemo] = useState(false)
@@ -28,14 +28,15 @@ const EditProduct = () => {
         navigate('/')
       }
     }
-
   }, [infoUser.sub, isSuccess, navigate, product])
   useEffect(() => {
+    setLoader(true)
     if (isSuccess) {
+      setLoader(false)
       setPrevImages(product.thumbnail.map((item: string) => { return { preview: item } }))
       setListFile(product.thumbnail.map((item: string) => { return { preview: item } }))
     }
-  }, [isSuccess, product])
+  }, [isSuccess, product, setLoader])
   const handleFile = (files: File[]) => {
     setListFile(files)
   }
@@ -65,7 +66,8 @@ const EditProduct = () => {
     
     if(dataForm) {
       dataForm.thumbnail = [...outListFile]
-
+      
+      setLoader(true)
       requestApi('upload/delete-files', 'DELETE', fileDelete )
       if(newListFile.length > 0){
         const dataFile = new FormData();
@@ -79,7 +81,7 @@ const EditProduct = () => {
     }
   }
   const uploadFile = (dataFile:FormData, dataForm:InterDataFormProduct) =>{
-    setLoader(true)
+    
     requestApi('upload/arr-files', 'POST', dataFile, 'multipart/form-data')
     .then(response => {
         dataForm.price = Number(dataForm.price)
@@ -96,6 +98,7 @@ const EditProduct = () => {
     requestApi(`product/${idProduct}`, 'PATCH', dataForm, 'application/json').then((res)=>{
       console.log(res);
       setLoader(false)
+      refetch()
       navigate(`/detail-product/${res.data._id}`)
   })
   .catch(err=>{

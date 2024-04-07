@@ -1,16 +1,18 @@
 import { CiLocationOn } from "react-icons/ci"
 import '../../../assets/slide.css'
 import { useState } from "react"
-import { formatCurrency, InterDataFormProduct } from "../../../util"
-import { getAddress } from "../../../redux/features/address"
+import { formatCurrency, InterDataFormProduct, TypeProductUpdate } from "../../../util"
+import { getAddress, SelectDataDistrict, SelectDataWard } from "../../../redux/features/address"
+import { useAppSelector } from "../../../redux/hook"
 
 
 const DemoProduct = ({ product }: {
-    product: InterDataFormProduct
+    product: InterDataFormProduct | TypeProductUpdate
 }) => {
     const { address, title, price, description, specifications, thumbnail } = product
     const [currentIndex, setCurrentIndex] = useState(0);
-
+    const district = useAppSelector(SelectDataDistrict)
+    const ward = useAppSelector(SelectDataWard)
     const goToPrevSlide = () => {
         const index = (currentIndex - 1 + thumbnail.length) % thumbnail.length;
         setCurrentIndex(index);
@@ -60,7 +62,7 @@ const DemoProduct = ({ product }: {
                 <h2 className=" font-semibold text-gray-500 py-2 border-b mb-2">Khu vực</h2>
                 <div className=" flex items-center gap-2">
                     <p className=" text-xl"><CiLocationOn /></p>
-                    <p className=" text-sm"> {getAddress(address)} </p>
+                    <p className=" text-sm"> {getAddress(address,district,ward)} </p>
                 </div>
             </div>
         </div>

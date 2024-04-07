@@ -78,3 +78,9 @@ export type typeValueSelectAddress = {
     };
     address:string
 }
+export type typeAddressInProduct = {
+    address: string,
+    idDistrict: string,
+    idProvince: string,
+    idWard: string
+}

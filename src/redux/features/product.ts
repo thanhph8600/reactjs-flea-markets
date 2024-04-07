@@ -8,11 +8,18 @@ export const fetchProducts = createAsyncThunk('product/fetchProducts', async () 
     const response = await requestApi('product', 'GET', {})
     return response.data
 })
-export const fetchProduct = createAsyncThunk('product/fetchProduct', async (id:string) => {
+export const fetchProduct = createAsyncThunk('product/fetchProduct', async (id: string) => {
     const response = await requestApi(`product/${id}`, 'GET', {})
     return response.data
 })
-
+export const updateStatusProduct = createAsyncThunk(
+    'product/updateStatusProduct',
+    async (payload: { id: string, status: string }) => {
+      const { id, status } = payload;
+      const response = await requestApi(`product/${id}`, 'PATCH', { status });
+      return response.data;
+    }
+  );
 
 const productSlice = createSlice({
     name: 'product',
@@ -47,13 +54,24 @@ const productSlice = createSlice({
                 state.loading = true
                 console.log(action.error);
             })
+
+            .addCase(updateStatusProduct.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(updateStatusProduct.fulfilled, (state) => {
+                state.loading = false
+            })
+            .addCase(updateStatusProduct.rejected, (state, action) => {
+                state.loading = true
+                console.log(action.error);
+            })
     }
 })
-export const handleImgae = (listImage:string[]) => {
-    const thumbnail = listImage.map((item)=> {return `http://localhost:3000/uploads/${item}`} )
-     return thumbnail
- }
-export const SelectAllProduct = (state:RootState) => state.product.listProduct
+export const handleImgae = (listImage: string[]) => {
+    const thumbnail = listImage.map((item) => { return `http://localhost:3000/uploads/${item}` })
+    return thumbnail
+}
+export const SelectAllProduct = (state: RootState) => state.product.listProduct
 export const SelectLoadingProduct = (state: RootState) => state.product.loading
-export const SelectProduct = (state:RootState) => state.product.product
+export const SelectProduct = (state: RootState) => state.product.product
 export default productSlice.reducer

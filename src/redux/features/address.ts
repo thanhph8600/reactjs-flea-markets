@@ -1,64 +1,77 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import requestApi from '../../helper/api'
 import { RootState } from '../store'
 import { defaultValueDistrict, defaultValueWard, province as typeProvince, district as typeDistrict , ward as typeWard} from '../../util'
 
-
 const province = await requestApi('province', 'GET', {})
-const district = await requestApi('district', 'GET', {})
-const ward = await requestApi('ward', 'GET', {})
+
+export const fetchDistrict = createAsyncThunk('address/fetchDistrict', async () => {
+  const response = await requestApi('district', 'GET', {})
+  console.log(response);
+  return response.data
+})
+export const fetchWard = createAsyncThunk('address/fetchWard', async () => {
+  const response = await requestApi('ward', 'GET', {})
+  return response.data
+})
 
 export const addressSlide = createSlice({
   name: 'address',
   initialState: {
     province: province.data,
+    dataDistrcit : [defaultValueDistrict],
+    dataWard: [defaultValueWard],
     district: [defaultValueDistrict],
     ward: [defaultValueWard],
   },
   reducers: {
     setDistrict: (state, action) => {
-      const newDistrict = district.data.filter((item :typeDistrict)=> item._province_id === action.payload) 
+      const newDistrict = state.dataDistrcit.filter((item :typeDistrict)=> item._province_id === action.payload) 
       state.district = newDistrict
     },
     setWard: (state, action) => {
-      const newWard = ward.data.filter((item :typeWard)=> item._district_id === action.payload) 
+      const newWard = state.dataWard.filter((item :typeWard)=> item._district_id === action.payload) 
       state.ward = newWard
-    }
+    },
   },
+  extraReducers(builder) {
+    builder
+        .addCase(fetchDistrict.fulfilled, (state, action) => {
+            state.dataDistrcit = action.payload
+        })
+        .addCase(fetchWard.fulfilled, (state, action) => {
+          state.dataWard = action.payload
+      })
+}
 })
 
 export const { setDistrict, setWard } = addressSlide.actions
 
 export const getNameProvinceById = (id: string)=> {
   const itemProvince = province.data.find((item:typeProvince)=> item._id == id)
-  try {
-    return itemProvince._name    
-  } catch (error) {
-    console.log(error);
-    return '';
-  }
-}
-export const getNameDistrictById = (id:string) => {
-  const itemDistrict = district.data.find((item:typeDistrict)=> item._id == id)
-  if (itemDistrict._name){
-    return itemDistrict._name
-  }
-  return '';
-}
-export const getNameWardById = (id:string) => {
-  const itemWard = ward.data.find((item:typeWard)=> item._id == id)
-  if (itemWard._name){
-    return itemWard._name
-  }
-  return ''; 
+  return itemProvince ? itemProvince._name : '';
 }
 
-export const  getAddress = (address:{address:string,idProvince:string, idDistrict:string, idWard: string}) => {
-    return `${address.address}, ${getNameWardById(address.idWard)}, ${getNameDistrictById(address.idDistrict)}, ${getNameProvinceById(address.idProvince)}`
-}
+export const getNameDistrictById = (id: string, districtData: typeDistrict[]) => {
+  const itemDistrict = districtData.find((item: typeDistrict) => item._id === id);
+  return itemDistrict ? itemDistrict._name : '';
+};
+
+export const getNameWardById = (id: string, wardData: typeWard[]) => {
+  const itemWard = wardData.find((item: typeWard) => item._id === id);
+  return itemWard ? itemWard._name : '';
+};
+
+export const getAddress = (address: { address: string, idProvince: string, idDistrict: string, idWard: string }, districtData: typeDistrict[], wardData: typeWard[]) => {
+  const provinceName = getNameProvinceById(address.idProvince);
+  const districtName = getNameDistrictById(address.idDistrict, districtData);
+  const wardName = getNameWardById(address.idWard, wardData);
+  return `${address.address}, ${wardName}, ${districtName}, ${provinceName}`;
+};
 
 export const SelectProvince = (state:RootState) => state.address.province
 export const SelectDistrict = (state:RootState) => state.address.district
 export const SelectWard = (state:RootState) => state.address.ward
-
+export const SelectDataDistrict = (state:RootState) => state.address.dataDistrcit
+export const SelectDataWard = (state:RootState) => state.address.dataWard
 export default addressSlide.reducer

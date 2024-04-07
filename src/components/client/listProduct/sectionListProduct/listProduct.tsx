@@ -3,11 +3,17 @@ import { IoGrid } from "react-icons/io5"
 import ItemProductGrid, { ItemProductGridLoading } from "./itemProductGrid"
 import { useState } from "react"
 import ItemProductCol, { ItemProductColLoading } from "./itemProductCol"
-import { useGetProductByIdCategoryQuery } from "../../../../redux/rtkQuery/productQuery"
+import { TypeProduct, typeValueSelectAddress} from "../../../../util"
 
-const SectionListProduct = ({ idCate }: { idCate: string }) => {
+const SectionListProduct = ({ products, isLoading, isSuccess, isFetching, fillterAddress }: {
+    products: TypeProduct[]
+    isLoading: boolean
+    isSuccess: boolean
+    isFetching: boolean
+    fillterAddress : typeValueSelectAddress
+}) => {
+    
     const [showListGrid, setShowListGrid] = useState(true)
-    const { data: products, isLoading, isSuccess, isFetching } = useGetProductByIdCategoryQuery(idCate)
     
     return (
         <div className="bg-white shadow-sm rounded-sm ">
@@ -38,7 +44,7 @@ const SectionListProduct = ({ idCate }: { idCate: string }) => {
                             <ItemProductGridLoading length={3} />
                             :
                             isSuccess && products.map((item) => {
-                                return <ItemProductGrid key={item._id} itemProduct={item} />
+                                return <ItemProductGrid key={item._id} itemProduct={item} fillterAddress={fillterAddress} />
                             })
                         }
                     </div> :
@@ -46,7 +52,7 @@ const SectionListProduct = ({ idCate }: { idCate: string }) => {
                         {isLoading || isFetching ? 
                             <ItemProductColLoading  length={5}/> :
                             isSuccess && products.map((item) => {
-                            return <ItemProductCol key={item._id} itemProduct={item} />
+                            return <ItemProductCol key={item._id} itemProduct={item} fillterAddress={fillterAddress}/>
                         })
                         }
                     </div>

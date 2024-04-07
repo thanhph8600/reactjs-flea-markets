@@ -3,7 +3,8 @@ import '../../../../assets/addproduct.css'
 import {  InterDataFormProduct, TypeProductUpdate } from "../../../../util"
 import SelectSpecification from "./selectSpecification"
 import SelectTitleAndDescription from "./selectTitleAndDescription"
-import { getAddress } from "../../../../redux/features/address"
+import { getAddress, SelectDataDistrict, SelectDataWard } from "../../../../redux/features/address"
+import { useAppSelector } from "../../../../redux/hook"
 
 interface ValueSpecification {
     [key: string]: string;
@@ -18,7 +19,8 @@ const InfoUpdateProduct = ({ onSubmitForm, onHandleShowdemo, product }: {
     const [valueSpecification, setValueSpecification] = useState<ValueSpecification>({});
     const [dataForm, setDataForm] = useState({} as InterDataFormProduct)
     const [errorForm, setErrorForm] = useState({ title: '', description: '', address: '', price: '' })
-
+    const district = useAppSelector(SelectDataDistrict)
+    const ward = useAppSelector(SelectDataWard)
     useEffect(()=>{
         setValueSpecification(product.specifications)
         setDataForm({ ...dataForm, title: product.title, description: product.description, price: product.price });
@@ -124,7 +126,7 @@ const InfoUpdateProduct = ({ onSubmitForm, onHandleShowdemo, product }: {
                             <div className=" relative">
                                 <div className=" cursor-not-allowed bg-gray-200 px-4 py-2 border rounded-lg flex items-center gap-2 ">
                                         <p className=" pr-2 text-sm">
-                                            { getAddress(product.address) }
+                                            { getAddress(product.address, district, ward) }
                                         </p>
                                 </div>
                             </div>

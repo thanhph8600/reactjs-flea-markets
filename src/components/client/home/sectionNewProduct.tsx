@@ -4,7 +4,7 @@ import { TypeProduct } from "../../../util"
 import { useGetAllProductQuery } from "../../../redux/rtkQuery/productQuery"
 
 const SectionNewProduct = () => {
-    const { data: products,isLoading} = useGetAllProductQuery()
+    const { data: products,isLoading } = useGetAllProductQuery()
      
     const [show, setShow] = useState(false)
     const [arrShow, setArrShow] = useState([] as TypeProduct[])

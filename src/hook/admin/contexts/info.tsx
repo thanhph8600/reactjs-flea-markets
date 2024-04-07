@@ -34,10 +34,12 @@ export const defaultUser = {
     phone: '',
     role: '',
     sub: '',
+    avata: '',
 }
-type User = {
+export type User = {
     username: string,
     phone: string,
     role: string,
     sub: string,
+    avata: string,
 }

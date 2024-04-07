@@ -60,19 +60,19 @@ const InfoSeller = ({ customer,idProduct }: { customer: User,idProduct: string }
                             <div className=" border rounded-md py-2 ">
                                 <p className=" font-semibold text-sm text-center">098824777</p>
                             </div>
-                            <div className=" px-4 flex justify-between border rounded-md py-2 ">
+                            <Link to={`/chat/${customer._id}`} className=" px-4 flex justify-between border rounded-md py-2 ">
                                 <p className=" text-2xl"><IoLogoWechat /></p>
                                 <p className=" font-semibold text-sm text-center"> Chat với người bán </p>
-                            </div>
+                            </Link>
                         </div>
                     </div>
                 </div>
                 : <>
                     <div className=" py-2">
                         <div className=" flex flex-col gap-2">
-                            <div className=" border rounded-md py-2 bg-green-600 hover:bg-green-800 cursor-pointer text-white">
-                                <p className=" font-semibold text-sm text-center"> Đã bán/ Ẩn tin </p>
-                            </div>
+                            <Link to={`/my-ads/${idProduct}`}  className=" border rounded-md py-2 bg-green-600 hover:bg-green-800 cursor-pointer text-white text-center font-semibold text-sm">
+                                Đã bán/ Ẩn tin 
+                            </Link>
                             <Link to={`/cap-nhat-tin/${idProduct}`} className=" w-full text-center font-semibold text-sm  border rounded-md py-2 ">
                             Sửa tin
                             </Link>

@@ -1,18 +1,25 @@
 import { CiLocationOn } from "react-icons/ci"
 import { Link } from "react-router-dom"
-import { formatCurrency, TypeProduct } from "../../../../util"
-import { getNameProvinceById } from "../../../../redux/features/address"
+import { formatCurrency, TypeProduct, typeValueSelectAddress } from "../../../../util"
+import { SelectDataDistrict, SelectDataWard } from "../../../../redux/features/address"
+import { handleShowAddressByFillterAddress } from "./setProductByCategory"
+import { useAppSelector } from "../../../../redux/hook"
 
-const ItemProductCol = ({ itemProduct }: { itemProduct: TypeProduct }) => {
+const ItemProductCol = ({ itemProduct, fillterAddress }: { itemProduct: TypeProduct,fillterAddress : typeValueSelectAddress }) => {
+    const district = useAppSelector(SelectDataDistrict)
+    const ward = useAppSelector(SelectDataWard)
     return (
         <Link to={`/detail-product/${itemProduct._id}`} className=" hover:shadow-xl p-3 border-b cursor-pointer flex gap-3">
             <div className=" w-1/4 h-30">
-                <img className=" object-cover h-30" src={`http://localhost:3000/uploads/${itemProduct.thumbnail[0]}`} alt="" />
+                <img className=" object-cover h-30" src={itemProduct.thumbnail[0]} alt="" />
             </div>
             <div className=" w-3/4 py-2 flex gap-2 flex-col">
                 <p className=" text-sm truncate">{itemProduct.title} </p>
                 <p className=" text-base text-red-600 font-semibold">{formatCurrency(itemProduct.price)} </p>
-                <p className=" text-gray-500 text-xs flex gap-1"><CiLocationOn /> {getNameProvinceById(itemProduct.address.idProvince)} </p>
+                <p className=" text-gray-500 text-xs flex gap-1">
+                    <CiLocationOn /> 
+                    {handleShowAddressByFillterAddress(itemProduct.address,fillterAddress,district,ward)}
+                </p>
             </div>
         </Link>
     )

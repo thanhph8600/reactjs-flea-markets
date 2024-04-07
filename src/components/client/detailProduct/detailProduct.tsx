@@ -2,21 +2,12 @@ import { useParams } from "react-router-dom"
 import DemoProduct from "./demoProduct";
 import '../../../assets/slideHome.css'
 import InfoSeller from "./infoSeller";
-import { fetchProduct, SelectLoadingProduct, SelectProduct } from '../../../redux/features/product';
-import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-import { useEffect } from "react";
+import { useGetProductByIDQuery } from "../../../redux/rtkQuery/productQuery";
+
 
 const DetailProduct = () => {
     const { id } = useParams()
-    const dispatch = useAppDispatch()
-    const product = useAppSelector(SelectProduct)
-    const loading = useAppSelector(SelectLoadingProduct)
-    
-    useEffect(()=>{
-        if(id){
-            dispatch(fetchProduct(id))
-        }
-    },[dispatch, id])
+    const { data: product, isLoading, isSuccess } = useGetProductByIDQuery(id)
     
     return (
         <div className=" w-[950px] m-auto py-4">
@@ -24,20 +15,22 @@ const DetailProduct = () => {
                 <div className="flex gap-4 relative">
                     <div className=" w-2/3">
                         <div>
-                            {!loading && product._id !='' ?
+                            {!isLoading && isSuccess ?
                                 <DemoProduct product={product} /> :
                                 <div>
-                                    <div className="skeleton h-[350px]  rounded-md"></div>
+                                    <div className="skeleton h-[370px]  rounded-md"></div>
                                     <div className=" py-2 flex flex-col gap-2">
-                                        <h2 className=" py-4 skeleton  rounded-md"> </h2>
-                                        <p className=" py-2 skeleton  rounded-md"></p>
-                                        <p className=" py-2 skeleton  rounded-md" ></p>
+                                        <h2 className=" py-4 skeleton w-60  rounded-md"> </h2>
+                                        <p className=" py-2 skeleton w-20 rounded-md"></p>
+                                        <p className=" py-2 skeleton w-32 rounded-md" ></p>
+                                        <p className=" py-2 skeleton rounded-md" ></p>
                                     </div>
+                                    <p className=" mt-6 py-2 skeleton w-52 rounded-md" ></p>
                                     <div className=" grid grid-cols-2 gap-4 text-sm py-4 ">
-                                        <div className="skeleton py-1  rounded-md"></div>
-                                        <div className="skeleton py-1  rounded-md"></div>
-                                        <div className="skeleton py-1  rounded-md"></div>
-                                        <div className="skeleton py-1 rounded-md"></div>
+                                        <div className="skeleton py-2  w-32 rounded-md"></div>
+                                        <div className="skeleton py-2  w-32 rounded-md"></div>
+                                        <div className="skeleton py-2  w-32 rounded-md"></div>
+                                        <div className="skeleton py-2 w-32 rounded-md"></div>
                                     </div>
                                     <div>
                                         <h2 className=" font-semibold text-gray-500 py-2 border-b mb-2"></h2>
@@ -49,7 +42,7 @@ const DetailProduct = () => {
                         </div>
                     </div>
                     <div className=" w-1/3 border-t pr-3 pt-4 ">
-                        {!loading && product._id !=''?
+                        {!isLoading && isSuccess ?
                             <div className=" sticky top-0 left-0">
                                 <InfoSeller customer={product.id_customer[0]} idProduct={product._id} />
                             </div>

@@ -19,6 +19,8 @@ export interface InterDataFormProduct {
         address: string,
     },
     thumbnail: Array<string>,
+    created_at: Date
+    end_at: Date
 }
 
 export interface TypeProduct {
@@ -39,9 +41,11 @@ export interface TypeProduct {
     },
     thumbnail: Array<string>,
     status: string,
+    created_at: Date
+    end_at: Date
 }
 
-export const defaultValueProduct:TypeProduct = {
+export const defaultValueProduct = {
     _id: '',
     id_customer: '',
     id_category: '',
@@ -80,4 +84,6 @@ export interface TypeProductUpdate {
     },
     thumbnail: Array<string>,
     status: string,
+    created_at: Date
+    end_at: Date
 }

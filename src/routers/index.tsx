@@ -21,6 +21,8 @@ import Login from '../components/client/login/login';
 import Register from '../components/client/login/register';
 import AddProduct from '../components/client/addProduct/addProduct';
 import EditProduct from '../components/client/editProduct/editProduct';
+import ManagementProduct from '../components/client/managementProduct/managementProduct';
+import ChatComponent from '../components/client/chat/chatComponent';
 const Router = () => {
   return (
     <Routes>
@@ -37,6 +39,10 @@ const Router = () => {
           <Route element={<ClientPrivateRouter />} >
             <Route path="/dang-tin" element={<AddProduct />} />
             <Route path="/cap-nhat-tin/:idProduct" element={<EditProduct />} />
+            <Route path="/my-ads" element={<ManagementProduct />} />
+            <Route path="/my-ads/:idProduct" element={<ManagementProduct />} />
+            <Route path="/chat" element={<ChatComponent />} />
+            <Route path="/chat/:idCustomer" element={<ChatComponent />} />
           </Route>
         </Route>
         <Route path="/404-not-found" element={<NotFoundPage />} />

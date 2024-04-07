@@ -3,7 +3,7 @@ import { useAppSelector } from "../../../../../redux/hook"
 import { SelectDistrict, SelectProvince, SelectWard, setDistrict, setWard } from "../../../../../redux/features/address"
 import { useDispatch } from "react-redux"
 import { useState } from "react"
-import { defaultValueSelectAddress, defaultValueWard, district, province, typeValueSelectAddress, ward } from "../../../../../util"
+import { defaultValueDistrict, defaultValueSelectAddress, defaultValueWard, district, province, typeValueSelectAddress, ward } from "../../../../../util"
 import SelectItemAddressJSX from "./selectItemAddress"
 import SelectDefault from "./selectDefault"
 import ListValueSelect from "./listValueSelect"
@@ -35,26 +35,36 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress }: {
             setSelect({ ...select, title: 'xã phường' })
         }
     }
-    const handleListShow = (name: string) => {
-        console.log(name);
 
-    }
     const handleSelect = (id: string, action: string) => {
         setIsShowList(false)
-
+        
         if (action == 'tỉnh thành') {
             const item = province.find((item: province) => item.id == id)
-            setSelect({ ...defaultValueSelectAddress, province: item as province })
-            dispatch(setDistrict(id))
+            if (item){
+                setSelect({ ...defaultValueSelectAddress, province: item as province })
+                dispatch(setDistrict(id))
+            }else {
+                setSelect({ ...defaultValueSelectAddress})
+            }
         }
         if (action == 'quận huyện') {
             const item = district.find((item: district) => item.id == id)
-            setSelect({ ...select, district: item as district , ward: defaultValueWard })
-            dispatch(setWard(id))
+            if (item) {
+                setSelect({ ...select, district: item as district , ward: defaultValueWard })
+                dispatch(setWard(id))
+            }else {
+                setSelect({ ...select, district: defaultValueDistrict , ward: defaultValueWard })
+            }
+
         }
         if (action == 'xã phường') {
             const item = ward.find((item: ward) => item.id == id)
-            setSelect({ ...select, ward: item as ward })
+            if(item) {
+                setSelect({ ...select, ward: item as ward })
+            }else{
+                setSelect({ ...select, ward:  defaultValueWard })
+            }
         }
     }
     return (
@@ -75,13 +85,13 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress }: {
                     </div>
                     <div>
                         <div className="flex flex-col gap-4 py-4">
-                            <SelectItemAddressJSX handleShow={handleShow} name={select.province._name} address='province' />
+                            <SelectItemAddressJSX handleShow={handleShow} name={select.province._name} address='province'  onHandleSelect={handleSelect} />
                             {select.province._name ?
-                                <SelectItemAddressJSX handleShow={handleShow} name={select.district._name} address='district' />
+                                <SelectItemAddressJSX handleShow={handleShow} name={select.district._name} address='district'  onHandleSelect={handleSelect} />
                                 : <SelectDefault name="quận huyện" />}
 
                             {select.district._name ?
-                                <SelectItemAddressJSX handleShow={handleShow} name={select.ward._name} address='ward' />
+                                <SelectItemAddressJSX handleShow={handleShow} name={select.ward._name} address='ward'  onHandleSelect={handleSelect} />
                                 : <SelectDefault name="xã phường" />}
                         </div>
                     </div>
@@ -91,7 +101,7 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress }: {
                     </div>
                 </div>
                 :
-                <ListValueSelect title={select.title} listShow={listShow} setIsShowList={setIsShowList} handleListShow={handleListShow} handleSelect={handleSelect} />
+                <ListValueSelect title={select.title} listShow={listShow} setIsShowList={setIsShowList}  handleSelect={handleSelect} />
             }
         </>
     )

@@ -10,6 +10,7 @@ import { CategoryDetail, InterDataFormProduct } from "../../../util";
 import { categoryContext } from "../../../hook/admin/contexts/categories";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useGetAllProductQuery } from "../../../redux/rtkQuery/productQuery";
 
 
 
@@ -24,6 +25,7 @@ const AddProduct = () => {
     const {getCategoryDetailBySlug} = useContext(categoryContext)
     const { setLoader } = useContext(LoaderContex)
     const { infoUser } = useContext(infoUserContext)
+    const { refetch } = useGetAllProductQuery()
     useEffect(() => {
         document.title = 'Đăng tin'
     }, [])
@@ -57,6 +59,7 @@ const AddProduct = () => {
                 requestApi('product', 'POST', dataForm, 'application/json').then((res)=>{
                     console.log(res);
                     setLoader(false)
+                    refetch()
                     navigate(`/detail-product/${res.data._id}`)
                 })
                 .catch(err=>{
