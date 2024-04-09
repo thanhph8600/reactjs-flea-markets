@@ -1,15 +1,21 @@
 import { IoLogoWechat } from "react-icons/io5"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { infoUserContext } from "../../../hook/admin/contexts"
 import { User } from "../../../util"
+import requestApi from "../../../helper/api"
 
 const InfoSeller = ({ customer,idProduct }: { customer: User,idProduct: string }) => {
+    const navigate = useNavigate()
     const { infoUser } = useContext(infoUserContext)
     const [isCustomer, setIsCustomer] = useState(true)
     useEffect(() => {
         if (infoUser.sub == customer._id) setIsCustomer(false)
     }, [customer._id, infoUser.sub])
+    const handleMessWitchSeller = () =>{
+        requestApi(`messenger/${customer._id}`,'POST',{ id_product: idProduct })
+        navigate(`/chat/${customer._id}`)
+    }
     return (
         <>
             <div className="flex gap-2 py-2">
@@ -60,10 +66,10 @@ const InfoSeller = ({ customer,idProduct }: { customer: User,idProduct: string }
                             <div className=" border rounded-md py-2 ">
                                 <p className=" font-semibold text-sm text-center">098824777</p>
                             </div>
-                            <Link to={`/chat/${customer._id}`} className=" px-4 flex justify-between border rounded-md py-2 ">
+                            <div onClick={()=>handleMessWitchSeller()} className=" cursor-pointer px-4 flex justify-between border rounded-md py-2 ">
                                 <p className=" text-2xl"><IoLogoWechat /></p>
                                 <p className=" font-semibold text-sm text-center"> Chat với người bán </p>
-                            </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

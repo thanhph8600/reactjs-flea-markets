@@ -19,7 +19,7 @@ export const productSlice = createApi({
     getAllProduct: builder.query<TypeProduct[], void>({
       query: () => 'product'
     }),
-    getProductByID: builder.query<TypeProductUpdate, void>({
+    getProductByID: builder.query<TypeProductUpdate, string>({
       query: productId => `/product/${productId}`
     }),
     getProductByIdCategory: builder.query<TypeProduct[], string>({

@@ -1,5 +1,3 @@
-import { CiImageOn } from "react-icons/ci";
-import { IoIosSend } from "react-icons/io";
 import { useGetListMessengerByIdCustomerQuery } from "../../../redux/rtkQuery/messenger";
 import { useGetCustomerByIDQuery } from "../../../redux/rtkQuery/customerQuery";
 import { useEffect, useRef, useState } from "react";
@@ -7,33 +5,55 @@ import requestApi from "../../../helper/api";
 import io, { Socket } from 'socket.io-client';
 import { Messenger } from "../../../util";
 import { User } from "../../../hook/admin/contexts/info";
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import ItemMessenger from "./itemMess/itemMessenger";
+import InputSendMessenger from "./itemMess/inputSendMessenger";
 
-const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: { 
-    idCustomer: string, 
-    onHandleShowListRoom: () => void 
+const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
+    idCustomer: string,
+    onHandleShowListRoom: () => void
     infoUser: User
 }) => {
+    const [socket, setSocket] = useState<Socket>()
     const { data: listMess, isLoading, isSuccess, refetch } = useGetListMessengerByIdCustomerQuery(idCustomer)
     const { data: infoCustomer, isLoading: isLoadingCustomer, isSuccess: isSuccessCustomer } = useGetCustomerByIDQuery(idCustomer)
-    const [messenger, setMessenger] = useState('')
-    const [checkMess, setCheckMess] = useState('')
+    const [theLastMess, setTheLastMess] = useState({} as Messenger)
+
+
     const divRef = useRef<HTMLDivElement>(null);
 
 
     useEffect(() => {
-        refetchMess()
         if (divRef.current) {
             divRef.current.scrollTop = divRef.current.scrollHeight;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [listMess])
 
-    const refetchMess = () => {
-        refetch()
+    useEffect(()=>{
+                refetch()
+        console.log('refetch');
+    },[refetch, idCustomer])
 
-    }
+    useEffect(() => {
+        if (listMess && !isLoading && isSuccess) {
+            const lastMess = listMess[listMess.length - 1]
+            if (lastMess && infoCustomer) {
+                setTheLastMess(lastMess)
 
-    const [socket, setSocket] = useState<Socket>()
+                if (lastMess.id_customer[0] == infoCustomer._id && lastMess.isWatched != true) {
+                    requestApi(`messenger/${lastMess._id}`, 'PATCH', { isWatched: true })
+                        .then((data) => {
+                            if (socket)
+                                socket.emit('messenger', { ...data.data, id_receiver: infoCustomer._id });
+                            onHandleShowListRoom()
+                        })
+                }
+            }
+        }
+    }, [idCustomer, isLoading, isSuccess, listMess, infoCustomer])
+
+
     useEffect(() => {
         const newSocket = io('ws://localhost:3000');
         newSocket.on('connect', () => {
@@ -47,37 +67,14 @@ const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
             }
         };
     }, []);
-    const sendMess = () => {
-        if (messenger === '') {
-            setCheckMess('border-red-500');
-            return;
-        }
-        setCheckMess('');
-
-        requestApi(`messenger/${idCustomer}`, 'POST', { messenger })
-            .then((data) => {
-                if (socket)
-                    socket.emit('messenger', {...data.data, id_receiver: idCustomer});
-        
-                refetchMess();
-                setMessenger('');
-                onHandleShowListRoom();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
 
     useEffect(() => {
         if (socket) {
-            socket.on('messenger', (data:Messenger) => {
-                console.log('Received message from server:', data);
-                
+            socket.on('messenger', (data: Messenger) => {
                 if(data.id_receiver == infoUser.sub){
                     onHandleShowListRoom()
-                }
-                if(data.id_customer[0] == idCustomer && data.id_receiver == infoUser.sub)
                     refetch()
+                }
             });
 
             return () => {
@@ -86,8 +83,23 @@ const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
         }
     }, [socket]);
 
-    const handleMessenger = (value: string) => {
-        setMessenger(value)
+    const sendMess = (value:{messenger:string}|{ thumbnail:string }) => {
+        console.log(value);
+        
+        requestApi(`messenger/${idCustomer}`, 'POST', value ,'application/json',)
+            .then((data) => {
+                    socket?.emit('messenger', { ...data.data, id_receiver: idCustomer });
+
+                refetchMess();
+                onHandleShowListRoom();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const refetchMess = () => {
+        refetch()
     }
 
     return (
@@ -105,37 +117,30 @@ const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
                     {!isLoading && isSuccess && listMess && infoCustomer &&
                         listMess.map((item) => {
                             return (
-                                <div key={item._id} className={
-                                    item.id_customer[0] == infoCustomer._id ?
-                                        'bg-gray-100 inline-block max-w-[60%]  mr-auto rounded-md' :
-                                        'inline-block max-w-[60%] ml-auto text-left bg-blue-100 rounded-md'
-                                }>
-                                    <div className=" p-2  text-sm">
-                                        <p> {item.messenger}  </p>
-                                    </div>
-                                </div>
+                                <ItemMessenger key={item._id} messenger={item} infoCustomer={infoCustomer} />
                             )
                         })
                     }
+                    <div className="ml-auto text-left">
+                        {theLastMess && infoUser &&
+                            <>
+                                {theLastMess.id_customer == infoUser.sub && <>
+                                    {theLastMess.isWatched ?
+                                        <div className="w-4 h-4 ">
+                                            <img className=" object-cover rounded-full w-full h-full" src={infoCustomer?.avata} alt="" />
+                                        </div> :
+                                        <div>
+                                            <IoCheckmarkDoneOutline />
+                                        </div>
+                                    }
+                                </>}
+                            </>
+                        }
+                    </div>
                 </div>
             </div>
             <div className=" border-t p-2">
-                <div className=" flex gap-4 items-center px-3">
-                    <div className=" text-2xl cursor-pointer"><CiImageOn /></div>
-                    <input
-                        onChange={(e) =>
-                            handleMessenger(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                sendMess();
-                            }
-                        }}
-                        value={messenger}
-                        type="text"
-                        className={` w-full text-sm border rounded-md px-2 py-1 outline-none  ${checkMess}`}
-                    />
-                    <div onClick={() => sendMess()} className={` hover:text-gray-600 text-2xl cursor-pointer`}><IoIosSend /></div>
-                </div>
+                <InputSendMessenger onSendMess={sendMess} />
             </div>
         </div>
     )

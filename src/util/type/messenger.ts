@@ -11,6 +11,8 @@ export type Messenger = {
     isWatched: boolean,
     id_room_chat: string,
     id_receiver:string,
+    id_product: string[],
+    thumbnail:string,
     id_customer: string[],
     messenger: string,
     created_at: Date,

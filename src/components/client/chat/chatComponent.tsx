@@ -15,8 +15,8 @@ const ChatComponent = () => {
   }
   
   return (
-    <div className=" w-[950px] m-auto py-4">
-        <div className=" bg-white rounded shadow-md h-[650px]">
+    <div className="  lg:w-[950px] m-auto py-4">
+        <div className=" bg-white rounded shadow-md max-h-[650px] h-[80vh]">
             <div className="flex h-full">
               <div className=" w-2/5 border-r h-full">
                 <div className=" h-full flex flex-col">
@@ -39,7 +39,7 @@ const ChatComponent = () => {
                   <ListMessenger idCustomer={idCustomer} onHandleShowListRoom={handleShowListRoom} infoUser={infoUser} />
                 :
                   <div className=" p-5 h-full flex  flex-col items-center justify-center">
-                    <img src="https://chat.chotot.com/emptyRoom.png" alt="" />
+                    <img className=" w-full h-full object-cover" src="https://chat.chotot.com/emptyRoom.png" alt="" />
                     <p className=" font-semibold text-base text-center">Tích cực chat, chốc lát chốt đơn</p>
                   </div>
                 }

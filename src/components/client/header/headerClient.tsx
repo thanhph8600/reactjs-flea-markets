@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import CategoryComponentHeader from "./category";
 import AccountComponentHeader from "./account";
 import SearchHeader from "./search";
+import IconChatHeader from "./iconChatHeader";
 
 const HeaderClient = () => {
   return (
@@ -39,9 +40,9 @@ const HeaderClient = () => {
               <p className="hover:text-gray-600 cursor-pointer">
                 <IoMdNotificationsOutline />
               </p>
-              <Link to={`chat`} className="hover:text-gray-600 cursor-pointer">
-                <IoChatbubblesOutline />
-              </Link>
+
+              <IconChatHeader />
+              
               <p className="hover:text-gray-600 cursor-pointer">
                 <HiOutlineShoppingBag />
               </p>

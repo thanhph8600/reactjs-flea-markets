@@ -22,7 +22,10 @@ const ListRoomChat = ({ roomChat, infoUser }: { roomChat: RoomChat, infoUser: Us
           </div>
 
           <p className={`text-xs  truncate ${classCheckWatch}`}>
-            {infoUser.sub == roomChat.theLastMess.id_customer[0] ? 'Bạn: ' : ''}  {roomChat.theLastMess.messenger}
+            {infoUser.sub == roomChat.theLastMess.id_customer[0] ? 'Bạn: ' : ''} 
+             {roomChat.theLastMess.messenger && roomChat.theLastMess.messenger}
+             {roomChat.theLastMess.thumbnail && 'Đã gữi 1 ảnh'}
+             {roomChat.theLastMess.id_product[0] && 'đã gửi 1 sản phẩm' }
           </p>
         </div>
       </Link>
