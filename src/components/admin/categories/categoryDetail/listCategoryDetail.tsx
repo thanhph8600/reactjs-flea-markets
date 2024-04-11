@@ -51,8 +51,8 @@ const ListCategoryDetail = () => {
         setFormCategorydetail({ ...formCategoryDetail })        
     }
     const validaionForm = () => {
-        if (formCategoryDetail.name.length < 3) {
-            setErrorForm('Tên danh mục phải lớn hơn 3 ký tự')
+        if (formCategoryDetail.name.length < 1) {
+            setErrorForm('Tên danh mục phải lớn hơn 1 ký tự')
             return false
         }
         const checkName = listCategoryDetail.findIndex((item: CategoryDetail) => {

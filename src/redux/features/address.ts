@@ -18,7 +18,7 @@ export const fetchWard = createAsyncThunk('address/fetchWard', async () => {
 export const addressSlide = createSlice({
   name: 'address',
   initialState: {
-    province: province.data,
+    province: province.data as typeProvince[],
     dataDistrcit : [defaultValueDistrict],
     dataWard: [defaultValueWard],
     district: [defaultValueDistrict],
@@ -27,11 +27,11 @@ export const addressSlide = createSlice({
   reducers: {
     setDistrict: (state, action) => {
       const newDistrict = state.dataDistrcit.filter((item :typeDistrict)=> item._province_id === action.payload) 
-      state.district = newDistrict
+      newDistrict ? state.district = newDistrict : state.district = [defaultValueDistrict]
     },
     setWard: (state, action) => {
       const newWard = state.dataWard.filter((item :typeWard)=> item._district_id === action.payload) 
-      state.ward = newWard
+      newWard ? state.ward = newWard : state.ward = [defaultValueWard]
     },
   },
   extraReducers(builder) {

@@ -49,6 +49,9 @@ const AccountComponentHeader = () => {
                                         </div>
                                     </div>
                                 </Link>
+                                <p className=" text-center text-sm border-y">
+                                    <Link onClick={() => setShowPopup(!showPopup)} to={`/wallet`} className=" py-2 block font-semibold hover:bg-gray-100">Ví của tôi</Link>
+                                </p>
                                 <div className="">
                                     <button onClick={()=> handleLogout()} className=" text-center w-full border-t py-2 font-semibold  hover:bg-gray-100">Đăng xuất</button>
                                 </div>

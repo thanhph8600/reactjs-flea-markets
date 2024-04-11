@@ -8,6 +8,7 @@ import { infoUserContext } from "../../../hook/admin/contexts"
 import { useAppDispatch, useAppSelector } from "../../../redux/hook"
 import { SelectLoadingProduct, updateStatusProduct } from "../../../redux/features/product"
 import { toast } from "react-toastify"
+import { useGetWalletQuery } from "../../../redux/rtkQuery/walletRktQuery"
 
 const ManagementProduct = () => {
     const navigate = useNavigate()
@@ -19,6 +20,7 @@ const ManagementProduct = () => {
     const [select, setSelect] = useState('')
     const dispatch = useAppDispatch()
     const loadingUpdateProduct = useAppSelector(SelectLoadingProduct)
+    const {data: wallet} = useGetWalletQuery()
     const classSelect = {
         active: "font-semibold px-6 py-2 cursor-pointer border-b-4 border-b-[#ff8800]",
         unActive: "font-semibold px-6 text-gray-400 py-2 cursor-pointer"
@@ -77,8 +79,8 @@ const ManagementProduct = () => {
                     </div>
                     <div className=" px-5">
                         <div className="flex items-center px-4 bg-gray-200 py-2 rounded gap-3">
-                            <p className=" font-semibold ">Số dư: {formatCurrency(0)} </p>
-                            <Link to={``} className=" bg-green-600 hover:bg-green-500 p-1 rounded-md text-white font-semibold"><IoAddOutline /></Link>
+                            <p className=" font-semibold ">Số dư: { wallet && formatCurrency(wallet.current_amount)} </p>
+                            <Link to={`/wallet`} className=" bg-green-600 hover:bg-green-500 p-1 rounded-md text-white font-semibold"><IoAddOutline /></Link>
                         </div>
                     </div>
                 </div>

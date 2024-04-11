@@ -60,9 +60,9 @@ const InfoSeller = ({ customer,idProduct }: { customer: User,idProduct: string }
                     </div>
                     <div className=" py-2">
                         <div className=" flex flex-col gap-2">
-                            <div className=" border rounded-md py-2 bg-green-600 hover:bg-green-800 cursor-pointer text-white">
+                            <Link to={`/buy-now/${idProduct}`} className=" border rounded-md py-2 bg-green-600 hover:bg-green-800 cursor-pointer text-white">
                                 <p className=" font-semibold text-sm text-center">Mua ngay</p>
-                            </div>
+                            </Link>
                             <div className=" border rounded-md py-2 ">
                                 <p className=" font-semibold text-sm text-center">098824777</p>
                             </div>

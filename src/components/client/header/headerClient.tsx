@@ -2,9 +2,7 @@ import {
   FaRegEdit,
 } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import { IoMdNotificationsOutline } from "react-icons/io";
 import {
-  IoChatbubblesOutline,
   IoListCircleOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -12,6 +10,7 @@ import CategoryComponentHeader from "./category";
 import AccountComponentHeader from "./account";
 import SearchHeader from "./search";
 import IconChatHeader from "./iconChatHeader";
+import Notification from "./notification";
 
 const HeaderClient = () => {
   return (
@@ -37,15 +36,15 @@ const HeaderClient = () => {
 
           <div className="flex gap-4 items-center">
             <div className="flex gap-5 items-center text-2xl">
-              <p className="hover:text-gray-600 cursor-pointer">
-                <IoMdNotificationsOutline />
-              </p>
+              
+              <Notification />
 
               <IconChatHeader />
               
               <p className="hover:text-gray-600 cursor-pointer">
                 <HiOutlineShoppingBag />
               </p>
+
               <Link to={`my-ads`} className="hover:text-gray-600 cursor-pointer flex gap-1 items-center">
                 <IoListCircleOutline />
                 <span className="text-base">Quản lý tin</span>

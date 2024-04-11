@@ -40,6 +40,8 @@ const InfoAddProduct = ({onHandleCategory,onSubmitForm,onHandleShowdemo}:{
     }
 
     const handleSpecification = (key: string, value: string) => {
+        console.log(key,value);
+        
         setValueSpecification({ ...valueSpecification, [key]: value })
     }
     const handleForm = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {

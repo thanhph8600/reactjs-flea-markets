@@ -23,6 +23,9 @@ import AddProduct from '../components/client/addProduct/addProduct';
 import EditProduct from '../components/client/editProduct/editProduct';
 import ManagementProduct from '../components/client/managementProduct/managementProduct';
 import ChatComponent from '../components/client/chat/chatComponent';
+import Wallet from '../components/client/wallet/wallet';
+import CheckoutWallet from '../components/client/wallet/checkoutWallet';
+import OrderConfirmation from '../components/client/buy-now/orderConfirmation';
 const Router = () => {
   return (
     <Routes>
@@ -43,6 +46,9 @@ const Router = () => {
             <Route path="/my-ads/:idProduct" element={<ManagementProduct />} />
             <Route path="/chat" element={<ChatComponent />} />
             <Route path="/chat/:idCustomer" element={<ChatComponent />} />
+            <Route path="/wallet" element={<Wallet />} />
+            <Route path="/checkout/:topic" element={<CheckoutWallet />} />
+            <Route path="/buy-now/:idProduct" element={<OrderConfirmation />} />
           </Route>
         </Route>
         <Route path="/404-not-found" element={<NotFoundPage />} />

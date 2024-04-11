@@ -23,13 +23,21 @@ const InfoUpdateProduct = ({ onSubmitForm, onHandleShowdemo, product }: {
     const ward = useAppSelector(SelectDataWard)
     useEffect(()=>{
         setValueSpecification(product.specifications)
-        setDataForm({ ...dataForm, title: product.title, description: product.description, price: product.price });
+        
     },[product.specifications])
-    
+    useEffect(()=> {
+        if(product){
+            const data = {
+                title: product.title,
+                description: product.description,
+                price: product.price
+            }            
+            setDataForm({ ...dataForm, ...data });
+        }
+    },[product])
     const handleSpecification = (key: string, value: string) => {
         setValueSpecification({ ...valueSpecification, [key]: value })
     }
-    
     const handleForm = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const target = event.target as HTMLInputElement;
         if (target.name) {
@@ -101,7 +109,6 @@ const InfoUpdateProduct = ({ onSubmitForm, onHandleShowdemo, product }: {
         }
     }
 
-
     return (
         <>
             <div>
@@ -115,7 +122,10 @@ const InfoUpdateProduct = ({ onSubmitForm, onHandleShowdemo, product }: {
                 </div>
 
                     <div>
-                        <SelectSpecification categoryDetail={product.id_category_detail[0]} valueSpecification={valueSpecification} onHandleSpecification={handleSpecification} />
+                        <SelectSpecification 
+                        categoryDetail={product.id_category_detail[0]} 
+                        valueSpecification={valueSpecification} 
+                        onHandleSpecification={handleSpecification} />
 
                         <div className=" py-4">
                             <SelectTitleAndDescription onHandleForm={handleForm} validateFormTitle={validateFormTitle} validateFormDescription={validateFormDescription} errorForm={errorForm} dataForm={dataForm} />
