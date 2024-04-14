@@ -26,6 +26,8 @@ import ChatComponent from '../components/client/chat/chatComponent';
 import Wallet from '../components/client/wallet/wallet';
 import CheckoutWallet from '../components/client/wallet/checkoutWallet';
 import OrderConfirmation from '../components/client/buy-now/orderConfirmation';
+import BuyerComponent from '../components/client/my-orders/buyer';
+import SellerComponent from '../components/client/my-orders/seller';
 const Router = () => {
   return (
     <Routes>
@@ -49,6 +51,8 @@ const Router = () => {
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/checkout/:topic" element={<CheckoutWallet />} />
             <Route path="/buy-now/:idProduct" element={<OrderConfirmation />} />
+            <Route path="/my-orders/buyer" element={<BuyerComponent />} />
+            <Route path="/my-orders/seller" element={<SellerComponent />} />
           </Route>
         </Route>
         <Route path="/404-not-found" element={<NotFoundPage />} />

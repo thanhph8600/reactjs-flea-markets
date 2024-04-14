@@ -16,11 +16,11 @@ export const walletSlice = createApi({
         },
     }),
     endpoints: builder => ({
-        getWallet: builder.query<wallet, void>({
-            query: () => 'wallet/customer/auto'
+        getWallet: builder.query<wallet, string>({
+            query: (id) => `wallet/customer/${id}`
         }),
         getHistoryByIdWallet: builder.query<history[], string>({
-            query: idWallet => `/history/${idWallet}`
+            query: idWallet => `history/${idWallet}`
         }),
     })
 })

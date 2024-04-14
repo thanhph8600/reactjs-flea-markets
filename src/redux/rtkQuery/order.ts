@@ -16,11 +16,11 @@ export const orderSlice = createApi({
         },
     }),
     endpoints: builder => ({
-        getSaleOrder: builder.query<typeOrder, void>({
-            query: () => `order/seller/auto`
+        getSaleOrder: builder.query<typeOrder[], string>({
+            query: (id) => `order/seller/${id}`
         }),
-        getPurchaseOrder: builder.query<typeOrder, void>({
-            query: () => `order/buyer/auto`
+        getPurchaseOrder: builder.query<typeOrder[], string>({
+            query: (id) => `order/buyer/${id}`
         }),
     })
 })

@@ -31,8 +31,8 @@ export const productSlice = createApi({
     getProductBySearch: builder.query<TypeProduct[], string>({
       query: search => `/product/search-product/${search}`
     }),
-    getProductByCusomter: builder.query<TypeProduct[], void>({
-      query: () => `/product/customer/auto`
+    getProductByCusomter: builder.query<TypeProduct[], string>({
+      query: (id) => `/product/customer/${id}`
     }),
   })
 })

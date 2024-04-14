@@ -1,17 +1,12 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useGetHistoryByIdWalletQuery } from "../../../redux/rtkQuery/walletRktQuery"
 import { formatCurrency, formatTime, history } from "../../../util"
 import Popup from "../../admin/popup"
 
-const HistoryWallet = ({ idWallet }: { idWallet: string }) => {
-    const { data: histories, isLoading, isSuccess } = useGetHistoryByIdWalletQuery(idWallet)
-    const [listHistories, setListHistories] = useState([] as history[])
+const HistoryWallet = ({ idCustomer }: { idCustomer: string }) => {
+    const { data: histories, isLoading, isSuccess} = useGetHistoryByIdWalletQuery(idCustomer)
     const [showFullHistoris, setShowFullHistoris] = useState(false)
-    useEffect(()=>{
-        if(histories && isSuccess){
-            setListHistories(histories.slice(0,5))
-        }
-    },[histories, isSuccess])
+
     const handleShowFull = () =>{
         setShowFullHistoris(!showFullHistoris)
     }
@@ -19,12 +14,12 @@ const HistoryWallet = ({ idWallet }: { idWallet: string }) => {
         <>
             <div className="flex justify-between items-center pb-4">
                 <h3 className=" font-semibold text-base">Lịch sử giao dịch</h3>
-                { !isLoading && isSuccess && listHistories && histories.length > 5 &&
+                { !isLoading && isSuccess && histories && histories.length > 5 &&
                 <p onClick={()=>handleShowFull()} className=" cursor-pointer text-blue-500 text-sm">Xem tất cả</p>}
             </div>
-            <div className=" flex flex-col">
-                { !isLoading && isSuccess && listHistories &&
-                    listHistories.map((item)=>{
+            <div className=" flex flex-col h-[400px] overflow-hidden">
+                { !isLoading && isSuccess && histories &&
+                    histories.map((item)=>{
                        return <ItemHistoryWallet key={item._id} history={item} />
                     })
                 }

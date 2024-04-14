@@ -17,8 +17,8 @@ export const notificationSlice = createApi({
         },
     }),
     endpoints: builder => ({
-        getNofitication: builder.query<Notification[], void>({
-            query: () => 'notification/customer/auto'
+        getNofitication: builder.query<Notification[], string>({
+            query: (id) => `notification/customer/${id}`
         }),
     })
 })

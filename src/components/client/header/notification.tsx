@@ -6,33 +6,40 @@ import { formatTimeDifference, Notification as typeNotification } from '../../..
 import io, { Socket } from 'socket.io-client';
 import { infoUserContext } from '../../../hook/admin/contexts'
 import { useAppDispatch, useAppSelector } from '../../../redux/hook'
-import { SelectLoadingNotification, SelectLoadingUpdateIsWatchNotification, updateIsNewNotification, updateIsWatchNotification } from '../../../redux/features/notification'
+import { SelectLoadingNotification, updateIsNewNotification, updateIsWatchNotification } from '../../../redux/features/notification'
+import { useGetHistoryByIdWalletQuery, useGetWalletQuery } from '../../../redux/rtkQuery/walletRktQuery'
+import { useGetPurchaseOrderQuery, useGetSaleOrderQuery } from '../../../redux/rtkQuery/order'
 
 const Notification = () => {
     const dispatch = useAppDispatch()
     const loadingUpdateNotification = useAppSelector(SelectLoadingNotification)
     const { infoUser } = useContext(infoUserContext)
     const [socket, setSocket] = useState<Socket>()
-    const { data: notification, isLoading, isFetching, isSuccess, refetch } = useGetNofiticationQuery()
+    const { data: notification, isLoading, isFetching, isSuccess, refetch } = useGetNofiticationQuery(infoUser.sub)
     const [showNotificaton, setShowNotification] = useState(false)
     const [constIsNewNotification, setConstIsNewNotification] = useState(0)
+    
+    const { refetch: refetchWallet } = useGetWalletQuery(infoUser.sub)
+    const { refetch: refetchHistory } = useGetHistoryByIdWalletQuery(infoUser.sub)
+    const { refetch: refetchSaleOrder } = useGetSaleOrderQuery(infoUser.sub)
+    const { refetch: refetchPurcharseOrder } = useGetPurchaseOrderQuery(infoUser.sub)
+    
     const handleShowNotifitaion = () => {
         setShowNotification(!showNotificaton)
     }
     useEffect(() => {
         if (!isLoading && isSuccess && notification && !isFetching) {
-            
                 setConstIsNewNotification(notification.filter((item) => item.isNew == true).length)
         }
-    }, [isLoading, isSuccess, notification, isFetching])
+    }, [isLoading, isSuccess, notification, isFetching, refetch])
     useEffect(()=>{
-        if(showNotificaton && constIsNewNotification > 0 && isSuccess && notification && !loadingUpdateNotification ){
             dispatch(updateIsNewNotification(infoUser.sub))
-        }
+    },[showNotificaton, isLoading, dispatch, infoUser.sub])
+    useEffect(()=>{
         if(loadingUpdateNotification){
-            retechListNotification()
+            refetchListNotification()
         }
-    },[constIsNewNotification, dispatch, infoUser.sub, isSuccess, loadingUpdateNotification, notification, showNotificaton])
+    },[loadingUpdateNotification, ])
     useEffect(() => {
         const newSocket = io('ws://localhost:3000');
         newSocket.on('connect', () => {
@@ -47,8 +54,22 @@ const Notification = () => {
     useEffect(() => {
         if (socket) {
             socket.on('notification', (data) => {
+                console.log(data);
+                
                 if(data.id_customer[0] == infoUser.sub){
-                    retechListNotification()
+                    refetchListNotification()
+                    if(data.link == 'my-orders/seller' || data.link == 'my-orders/buyer' ){
+                        refetchSaleOrder()
+                        refetchPurcharseOrder()
+                    }
+                    console.log('refect');
+                    
+                    if(data.link == '/wallet' || data.link == 'wallet'){
+                        console.log('refetch wallet');
+                        
+                        refetchWallet()
+                        refetchHistory()
+                    }
                 }
             });
 
@@ -57,7 +78,7 @@ const Notification = () => {
             };
         }
     }, [socket]);
-    const retechListNotification = () => {
+    const refetchListNotification = () => {
         refetch()
     }
     return (
@@ -77,7 +98,6 @@ const Notification = () => {
                                     key={item._id} 
                                     notification={item} 
                                     handleShowNotifitaion={handleShowNotifitaion} 
-                                    retechListNotification={retechListNotification}
                                     />
                                 })
                             }
@@ -90,28 +110,25 @@ const Notification = () => {
     )
 }
 
-const ItemNotification = ({ notification, handleShowNotifitaion, retechListNotification }: {
+const ItemNotification = ({ notification, handleShowNotifitaion }: {
     notification: typeNotification,
     handleShowNotifitaion: () => void
-    retechListNotification: () =>void
 }) => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const loadingUpdate = useAppSelector(SelectLoadingUpdateIsWatchNotification)
     const onNavigate = () => {
         handleShowNotifitaion()
         dispatch(updateIsWatchNotification(notification._id))
         navigate(`${notification.link}`)
     }
-    useEffect(()=>{
-        if(!loadingUpdate)
-            retechListNotification()
 
-    },[loadingUpdate, retechListNotification])
     return (
         <div onClick={() => onNavigate()} className=' cursor-pointer flex items-center gap-2 hover:bg-gray-100 p-2 rounded-md'>
             <div className=' w-10 h-10'>
-                <img className=' w-full h-full border rounded-full object-cover' src={notification.id_customer[0].avata} alt="" />
+                <img 
+                className=' w-full h-full border rounded-full object-cover' 
+                src={notification.id_product ? notification.id_product[0].thumbnail[0] : notification.id_customer[0].avata} 
+                alt="" />
             </div>
             <div className=' text-sm'>
                 <p className={notification.isWatched == false ? 'font-semibold': ' text-gray-600'}>{notification.content}</p>

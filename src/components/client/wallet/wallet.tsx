@@ -1,12 +1,14 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Popup from "../../admin/popup"
 import RechangerWallet from "./rechangerWallet"
 import { useGetWalletQuery } from "../../../redux/rtkQuery/walletRktQuery"
 import DetailWallet from "./detailWallet"
 import HistoryWallet from "./history"
+import { infoUserContext } from "../../../hook/admin/contexts"
 
 const Wallet = () => {
-    const { data: wallet, isLoading, isSuccess } = useGetWalletQuery()
+    const {infoUser} = useContext(infoUserContext)
+    const { data: wallet, isLoading, isSuccess } = useGetWalletQuery(infoUser.sub)
 
     const [showPopup, setShowPopup] = useState(false)
     const handleShowPopup = () => {
@@ -49,8 +51,7 @@ const Wallet = () => {
                             <DetailWallet wallet={wallet} />}
                         </div>
                         <div className=" w-1/3 bg-white rounded shadow-md p-4">
-                        { !isLoading && isSuccess && wallet && 
-                            <HistoryWallet idWallet={wallet._id} />}
+                            <HistoryWallet idCustomer={infoUser.sub} />
                         </div>
                     </div>
                 </div>

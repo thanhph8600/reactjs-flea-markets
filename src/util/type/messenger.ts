@@ -13,7 +13,7 @@ export type Messenger = {
     id_receiver:string,
     id_product: string[],
     thumbnail:string,
-    id_customer: string[],
+    id_customer: string[] | string,
     messenger: string,
     created_at: Date,
 }

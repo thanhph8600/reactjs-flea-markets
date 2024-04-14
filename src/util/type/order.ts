@@ -20,4 +20,10 @@ export type typeOrderCreate = {
     price: number,
     address: typeAddressInProduct;
 }
-export type statusOrder = 'waiting_confirm' | 'processing' | 'delivering' | 'delivered' | 'cancel_exp'
+export type statusOrder =
+    | 'waiting_confirm' 
+    | 'processing' 
+    | 'delivering' 
+    | 'delivered' 
+    | 'successful_delivery'
+    | 'cancel_exp'

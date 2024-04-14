@@ -8,13 +8,6 @@ const ShipBuyNow = () => {
                     <input type="radio" name="ship" id="auto-ship" checked />
                     <label htmlFor="auto-ship">Tự thỏa thuận phí giao hàng</label>
                 </div>
-                <div className=" flex justify-between">
-                    <div className=" flex items-center gap-2">
-                        <input type="radio" name="ship" id="shop-ship" />
-                        <label htmlFor="shop-ship">Chợ giao hàng</label>
-                    </div>
-                    <p className=" hidden text-sm text-gray-600">Phí: 25.000 đ</p>
-                </div>
             </div>
         </div>
     )

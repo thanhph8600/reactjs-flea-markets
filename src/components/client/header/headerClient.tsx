@@ -41,11 +41,17 @@ const HeaderClient = () => {
 
               <IconChatHeader />
               
-              <p className="hover:text-gray-600 cursor-pointer">
-                <HiOutlineShoppingBag />
-              </p>
+              <div className=" cursor-pointer group relative">
+                <p className=""><HiOutlineShoppingBag /></p>
+                <div className=" hidden group-hover:block absolute pt-4 z-20">
+                  <div className=" bg-white w-32 text-sm  rounded shadow-lg overflow-hidden">
+                    <Link to={'my-orders/buyer'} className=" block py-2 border-b  text-center hover:bg-gray-100">Đơn mua</Link>
+                    <Link to={'my-orders/seller'} className=" block py-2  text-center hover:bg-gray-100">Đơn bán</Link>
+                  </div>
+                </div>
+              </div>
 
-              <Link to={`my-ads`} className="hover:text-gray-600 cursor-pointer flex gap-1 items-center">
+              <Link to={`my-ads`} className=" cursor-pointer flex gap-1 items-center">
                 <IoListCircleOutline />
                 <span className="text-base">Quản lý tin</span>
               </Link>

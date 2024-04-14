@@ -1,25 +1,69 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import InfoProductBuyNow from "./infoProductBuyNow"
 import ShipBuyNow from "./shipBuyNow"
 import PaymentBuyNow from "./paymentBuyNow"
 import InfoPaymentBuyNow from "./infoPaymentBuyNow"
 import ButtonBuyBow from "./buttonBuyBow"
 import DeliveryAddress from "./deliveryAddress/deliveryAddress"
-import { useCallback, useState } from "react"
-import { deliveryAddress, TypeProductUpdate } from "../../../util"
+import { useCallback, useContext, useEffect, useState } from "react"
+import { deliveryAddress, typeOrderCreate, TypeProductUpdate } from "../../../util"
+import { useGetWalletQuery } from "../../../redux/rtkQuery/walletRktQuery"
+import { infoUserContext } from "../../../hook/admin/contexts"
+import { toast } from "react-toastify"
+import requestApi from "../../../helper/api"
+import { LoaderContex } from "../../../hook/admin/contexts/loader"
 
 const OrderConfirmation = () => {
+    const navigate = useNavigate()
+    const { setLoader } = useContext(LoaderContex)
     const { idProduct } = useParams()
+    const { infoUser } = useContext(infoUserContext)
     const [deliveryAddress, setDeliveryAddress] = useState({} as deliveryAddress)
     const [product, setProduct] = useState({} as TypeProductUpdate)
+    const { data:wallet, isLoading, isSuccess } = useGetWalletQuery(infoUser.sub)
+    const [checkWallet, setCheckWallet] = useState('')
     const handleAddress = useCallback((deliveryAddress: deliveryAddress) =>{
         setDeliveryAddress(deliveryAddress)
     },[])
     const handleProduct = useCallback((product:TypeProductUpdate) => {
         setProduct(product)
     },[])
-    
-    
+    useEffect(()=>{
+        if (!isLoading && isSuccess && wallet && product) {
+            product.price > wallet.current_amount ? setCheckWallet('Vui lòng nạp thêm tiền để thành toán'): setCheckWallet('')
+        }
+    },[isLoading, isSuccess, product, wallet])
+    const onSubmit = () => {
+        if(!deliveryAddress) {
+            toast.error('Bạn chưa chọn địa chỉ giao hàng')
+            return
+        }
+        const dataOrder: typeOrderCreate = {
+            id_seller: product.id_customer[0]._id,
+            id_buyer:infoUser.sub ,
+            id_product: product._id,
+            price: product.price,
+            address: deliveryAddress.address,
+        }
+
+        setLoader(true)
+        requestApi('order', 'POST', dataOrder)
+        .then((data)=>{
+            setLoader(false)
+            if(data.data.status == 400) {
+                toast.error(data.data.message)
+                return
+            }
+            
+            toast.success('Cảm ơn bạn đã đặt hàng bên chúng tôi')
+            navigate('/my-orders/buyer')
+        }).catch(err=>{
+            setLoader(false)
+            console.log(err);
+            if(err.response.data)
+            toast.error('Đặt hàng thất bại')
+        })
+    }
     return (
         <div className=" w-[950px] py-4 m-auto">
             <div className="w-[700px] flex flex-col gap-4">
@@ -64,11 +108,11 @@ const OrderConfirmation = () => {
 
                 <ShipBuyNow />
 
-                <PaymentBuyNow />
+               {wallet && <PaymentBuyNow checkWallet={checkWallet} wallet={wallet} />}
 
-                <InfoPaymentBuyNow />
+                { product && <InfoPaymentBuyNow product={product} />}
 
-                <ButtonBuyBow />
+                { product && wallet && <ButtonBuyBow  handleSubmit={onSubmit} product={product} checkWallet={checkWallet}  />}
             </div>
         </div>
     )

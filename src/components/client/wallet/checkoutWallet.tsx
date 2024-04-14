@@ -5,6 +5,7 @@ import { useGetHistoryByIdWalletQuery, useGetWalletQuery } from "../../../redux/
 import { useAppDispatch, useAppSelector } from "../../../redux/hook"
 import { SelectLoadingWallet, updateWallet } from "../../../redux/features/wallet"
 import { LoaderContex } from '../../../hook/admin/contexts/loader';
+import { infoUserContext } from "../../../hook/admin/contexts"
 
 const CheckoutWallet = () => {
     const { topic } = useParams()
@@ -14,7 +15,8 @@ const CheckoutWallet = () => {
     }, [topic])
 
     const navigate = useNavigate()
-    const {data:wallet, isLoading, isSuccess, isError, refetch: refetchWall } = useGetWalletQuery()
+    const {infoUser} = useContext(infoUserContext)
+    const {data:wallet, isLoading, isSuccess, isError, refetch: refetchWall } = useGetWalletQuery(infoUser.sub)
     const onSubmit = () => {
         refetchWall()
         navigate('/wallet')
