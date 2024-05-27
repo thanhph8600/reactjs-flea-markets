@@ -65,8 +65,8 @@ const OrderConfirmation = () => {
         })
     }
     return (
-        <div className=" w-[950px] py-4 m-auto">
-            <div className="w-[700px] flex flex-col gap-4">
+        <div className="max-w-[950px] md:w-[950px] py-4 m-auto">
+            <div className="md:w-[700px] flex flex-col gap-4">
                 <div className=" bg-white rounded shadow-md">
                     <h2 className=" p-2 px-4 text-base font-semibold">Xác nhận đơn hàng</h2>
                     <div className=" p-4 bg-green-100">

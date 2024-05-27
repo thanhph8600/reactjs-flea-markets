@@ -44,9 +44,9 @@ const SelectCategory = ({ handleShowSelectCategory,onHandleSelectCategory }: {
     return (
         <>
             <Popup onHandlePopup={handleShowSelectCategory}>
-                { listCategory.length > 1 && <div className=" fixed top-1/4 left-1/2  -translate-x-1/2 -translate-y-1/4">
-                    <div className="bg-white rounded-md w-[600px]">
-                        <div className=" bg-gray-200 font-semibold rounded-t-md flex p-2 items-center justify-between">
+                { listCategory.length > 1 && <div className=" fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4">
+                    <div className="bg-white rounded-md w-screen max-w-[600px] md:w-[600px]">
+                        <div className=" bg-gray-200 font-semibold rounded-t-md flex-row-reverse flex p-2 items-center justify-between">
                             {!checkSelectDetailCate ?
                                 <p onClick={() => handleShowSelectCategory()} className=" cursor-pointer"><IoMdClose /></p>
                                 :

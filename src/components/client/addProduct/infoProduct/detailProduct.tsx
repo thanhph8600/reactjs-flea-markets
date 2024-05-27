@@ -1,13 +1,17 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FaCaretDown } from "react-icons/fa"
 import SelectCategory from "./selectCategory"
 import '../../../../assets/addproduct.css'
 import { categoryContext } from "../../../../hook/admin/contexts/categories"
-import { defaultValueCategoryDetail, defaultValueSelectAddress, InterDataFormProduct, typeValueSelectAddress } from "../../../../util"
+import { defaultValueCategoryDetail, defaultValueSelectAddress, district, InterDataFormProduct, province, typeValueSelectAddress } from "../../../../util"
 import SelectSpecification from "./selectSpecification"
 import SelectTitleAndDescription from "./selectTitleAndDescription"
 import FillterAddress from "./fillterAddress"
 import Popup from "../../../admin/popup"
+import { useGetdeliveryAddressIsDefaultQuery } from "../../../../redux/rtkQuery/deliveryAddress"
+import { infoUserContext } from "../../../../hook/admin/contexts"
+import { getValueSelectAddress, SelectDataDistrict, SelectDataWard, SelectProvince, setDistrict, setWard } from "../../../../redux/features/address"
+import { useAppDispatch, useAppSelector } from "../../../../redux/hook"
 
 interface ValueSpecification {
     [key: string]: string;
@@ -29,6 +33,22 @@ const InfoAddProduct = ({onHandleCategory,onSubmitForm,onHandleShowdemo}:{
     const [showFillterAddress, setShowFillterAddress] = useState(false)
     const [filterAddress, setFillterAddress] = useState(defaultValueSelectAddress)
 
+    const dispatch = useAppDispatch()
+    const { infoUser } = useContext(infoUserContext)
+    const provinces = useAppSelector(SelectProvince)
+    const districts = useAppSelector(SelectDataDistrict)
+    const wards = useAppSelector(SelectDataWard)
+    
+    const { data: defaultDelivery, isLoading, isSuccess } = useGetdeliveryAddressIsDefaultQuery(infoUser.sub)
+    useEffect(()=>{
+        if(!isLoading && isSuccess && defaultDelivery.length > 0){
+            const province = provinces.find((item: province)=> item._id == defaultDelivery[0].address.idProvince)
+            const district = districts.find((item: district) => item._id == defaultDelivery[0].address.idDistrict)
+            dispatch(setDistrict(province?.id))
+            dispatch(setWard(district?.id))
+            setFillterAddress(getValueSelectAddress(defaultDelivery[0].address, districts,wards))
+        }
+    },[defaultDelivery, dispatch, districts, isLoading, isSuccess, provinces, wards])
     const handleShowSelectCategory = () => {
         setShowSelectCategory(false)
     }

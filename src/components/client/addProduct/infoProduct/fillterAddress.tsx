@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { useState } from "react"
-import { defaultValueSelectAddress, defaultValueWard, district, province, typeValueSelectAddress, ward } from "../../../../util"
+import { defaultValueDistrict, defaultValueSelectAddress, defaultValueWard, district, province, typeValueSelectAddress, ward } from "../../../../util"
 import { SelectDistrict, SelectProvince, SelectWard, setDistrict, setWard } from "../../../../redux/features/address"
 import { useAppSelector } from "../../../../redux/hook"
 import SelectItemAddressJSX from "../../listProduct/filter/filterAddress/selectItemAddress"
@@ -20,7 +20,9 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress, onHandlePop
     const [isShowListSlect, setIsShowList] = useState(false)
     const [listShow, setListShow] = useState([] as province[] | district[] | ward[])
     const [select, setSelect] = useState(filterAddress)
-
+    console.log(ward);
+    console.log(district);
+    
     const handleShow = (address: string) => {
         setIsShowList(true)
         if (address == 'province') {
@@ -47,12 +49,12 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress, onHandlePop
         }
         if (action == 'quận huyện') {
             const item = district.find((item: district) => item.id == id)
-            setSelect({ ...select, district: item as district , ward: defaultValueWard })
+            setSelect({ ...select, district: item as district || defaultValueDistrict , ward: defaultValueWard })
             dispatch(setWard(id))
         }
         if (action == 'xã phường') {
             const item = ward.find((item: ward) => item.id == id)
-            setSelect({ ...select, ward: item as ward })
+            setSelect({ ...select, ward: item as ward || defaultValueWard })
         }
     }
     const hadnleAddress = (address:string) => {
@@ -76,7 +78,10 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress, onHandlePop
                                 : <SelectDefault name="xã phường" />}
                             {
                                 select.ward._name ? 
-                                <input type="text" onChange={(e)=>hadnleAddress(e.target.value)} className=" border rounded-md p-2 outline-none" placeholder="Đia chỉ cụ thể"/>
+                                <input type="text" 
+                                    onChange={(e)=>hadnleAddress(e.target.value)} 
+                                    value={select.address}
+                                    className=" border rounded-md p-2 outline-none" placeholder="Đia chỉ cụ thể"/>
                                  :
                                  <input type="text" readOnly className=" cursor-not-allowed border rounded-md p-2 outline-none" placeholder="Đia chỉ cụ thể"/>
                             }

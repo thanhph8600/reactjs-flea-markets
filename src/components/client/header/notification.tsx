@@ -72,7 +72,6 @@ const Notification = () => {
                     }
                 }
             });
-
             return () => {
                 socket.disconnect();
             };
@@ -83,13 +82,13 @@ const Notification = () => {
     }
     return (
         <>
-            <div className='relative'>
+            <div className='relative '>
                 <p onClick={() => handleShowNotifitaion()} className="hover:text-gray-600 cursor-pointer relative">
                     <IoMdNotificationsOutline />
                     {infoUser.sub && constIsNewNotification>0 && <p className=" w-5 h-5 rounded-full bg-blue-500 text-white flex items-center justify-center text-base absolute -top-2 -right-2"> {constIsNewNotification} </p>}
                 </p>
                 {showNotificaton && <div className=' absolute z-20 top-11'>
-                    <div className=' p-2 bg-white w-80 rounded shadow-md border'>
+                    <div className='text-black p-2 bg-white w-80 rounded shadow-md border'>
                         <h4 className=' text-base font-semibold px-3 pb-3 pt-1'>Thông báo</h4>
                         <div className=' flex flex-col py-2  max-h-[400px] overflow-y-auto'>
                             {!isLoading && isSuccess && notification &&

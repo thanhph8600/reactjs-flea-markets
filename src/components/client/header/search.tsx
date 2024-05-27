@@ -49,7 +49,7 @@ const SearchHeader = () => {
                         placeholder="Tìm kiếm sản phẩm"
                         required
                     />
-                    <Link to={`${valueSearch}`} onClick={handleShowSearch} className="text-white absolute end-2.5 bottom-1 bg-[#FF8800]  focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 ">
+                    <Link to={`${valueSearch}`} onClick={handleShowSearch} className="text-white absolute end-2.5 bottom-1 bg-[#1a9c13]  focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 ">
                         <IoSearch />
                     </Link>
                     {showSearch && <ItemSearch valueSearch={valueSearch} onHandleShowSearch={handleShowSearch} />}

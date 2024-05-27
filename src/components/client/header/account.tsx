@@ -5,6 +5,7 @@ import { infoUserContext } from "../../../hook/admin/contexts"
 import { removeToken } from "../../../util"
 import { toast } from "react-toastify"
 import { defaultUser } from "../../../hook/admin/contexts/info"
+import { IoListCircleOutline } from "react-icons/io5"
 
 const AccountComponentHeader = () => {
     const [showPopup, setShowPopup] = useState(false)
@@ -20,25 +21,25 @@ const AccountComponentHeader = () => {
     }
     return (
         <>
-            <div className=" relative">
-                <div  onClick={() => setShowPopup(!showPopup)}  className="hover:text-yellow-100  cursor-pointer flex gap-1 items-center ">
+            <div className=" relative ">
+                <div onClick={() => setShowPopup(!showPopup)} className="hover:text-yellow-100  cursor-pointer flex gap-1 items-center ">
                     <FaRegUserCircle />
-                    <div className="text-base flex items-center gap-1">
+                    <div className="text-base items-center gap-1 hidden xl:flex">
                         <span className="text-base"> {infoUser.username || 'Tài khoản'} </span>
                         <FaChevronDown />
                     </div>
                 </div>
                 {showPopup && <div className=" absolute top-full right-0  w-[250px] pt-5 z-10">
-                    <div className=" bg-white border shadow-md rounded-md text-base">
+                    <div className="text-black bg-white border shadow-md rounded-md text-base">
                         {!infoUser.username ? <div className=" flex justify-evenly p-2  font-semibold" >
                             <Link onClick={() => setShowPopup(!showPopup)} className=" hover:text-yellow-600" to={'/login'} >Đăng nhập</Link>
                             <p>/</p>
                             <Link onClick={() => setShowPopup(!showPopup)} className=" hover:text-yellow-600" to={'/register'} >Đăng ký</Link>
                         </div> :
                             <div className="">
-                                <Link onClick={() => setShowPopup(!showPopup)}  to={`/customer/${infoUser.sub}`} className=" flex gap-2 p-2">
+                                <Link onClick={() => setShowPopup(!showPopup)} to={`/customer/${infoUser.sub}`} className=" flex gap-2 p-2">
                                     <div className=" w-10 h-10">
-                                        <img src="https://cdn.chotot.com/uac2/26681637" className=" w-full object-cover rounded-full" alt="" />
+                                        <img src={infoUser.avata} className=" w-full object-cover rounded-full" alt="" />
                                     </div>
                                     <div className=" w-full">
                                         <h2 className=" font-semibold border-b"> {infoUser.username} </h2>
@@ -49,11 +50,26 @@ const AccountComponentHeader = () => {
                                         </div>
                                     </div>
                                 </Link>
+
+                                <p className=" text-center text-sm border-y">
+                                    <Link to={`my-ads`} className=" py-2  font-semibold flex items-center gap-2 justify-center hover:bg-gray-100">
+                                        <IoListCircleOutline />Quản lý tin</Link>
+                                </p>
+                                <p className=" text-center text-sm border-y">
+                                    <Link to={'my-orders/buyer'} className=" py-2  font-semibold flex items-center gap-2 justify-center hover:bg-gray-100">
+                                    Đơn mua
+                                    </Link>
+                                </p>
+                                <p className=" text-center text-sm border-y">
+                                    <Link to={'my-orders/seller'} className=" py-2  font-semibold flex items-center gap-2 justify-center hover:bg-gray-100">
+                                    Đơn bán
+                                    </Link>
+                                </p>
                                 <p className=" text-center text-sm border-y">
                                     <Link onClick={() => setShowPopup(!showPopup)} to={`/wallet`} className=" py-2 block font-semibold hover:bg-gray-100">Ví của tôi</Link>
                                 </p>
                                 <div className="">
-                                    <button onClick={()=> handleLogout()} className=" text-center w-full border-t py-2 font-semibold  hover:bg-gray-100">Đăng xuất</button>
+                                    <button onClick={() => handleLogout()} className=" text-center w-full border-t py-2 font-semibold  hover:bg-gray-100">Đăng xuất</button>
                                 </div>
                             </div>
                         }

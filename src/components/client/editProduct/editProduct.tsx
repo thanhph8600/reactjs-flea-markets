@@ -127,16 +127,16 @@ const EditProduct = () => {
     setShowDemo(!showDemo)
   }
   return (
-    <div className=" w-[950px] m-auto py-6">
+    <div className=" md:w-[950px] max-w-[950px] m-auto py-6">
       <div className=" bg-white rounded-md border p-4 min-h-[600px]">
-        <div className=" flex gap-8 py-5 px-6">
-          <div className="w-1/3">
+        <div className=" md:flex gap-8 py-5 px-6">
+          <div className="md:w-1/3">
             <div>
               {errorFile && <p className=" bg-red-400 text-center text-white rounded py-1 mb-2"> {errorFile} </p>}
               <SelectImage onHandleFile={handleFile} onHandlePrevImages={handlePrevImages} prevImages={prevImages} listFile={listFile} />
             </div>
           </div>
-          <div className="w-2/3">
+          <div className="md:w-2/3 pt-4 md:pt-0">
             <div>
               {isSuccess && <InfoUpdateProduct onSubmitForm={onSubmitForm} onHandleShowdemo={handleShowDemo} product={product} />}
             </div>

@@ -11,6 +11,7 @@ import { categoryContext } from "../../../hook/admin/contexts/categories";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useGetAllProductQuery } from "../../../redux/rtkQuery/productQuery";
+import { useGetdeliveryAddressIsDefaultQuery } from "../../../redux/rtkQuery/deliveryAddress";
 
 
 
@@ -26,6 +27,7 @@ const AddProduct = () => {
     const { setLoader } = useContext(LoaderContex)
     const { infoUser } = useContext(infoUserContext)
     const { refetch } = useGetAllProductQuery()
+    const { refetch: refetchDefaultAddress } = useGetdeliveryAddressIsDefaultQuery(infoUser.sub)
     useEffect(() => {
         document.title = 'Đăng tin'
     }, [])
@@ -54,12 +56,12 @@ const AddProduct = () => {
                 dataForm.id_category_detail= itemCategoryDetail._id
                 dataForm.price = Number(dataForm.price)
                 dataForm.thumbnail = response.data.fileNames
-                console.log(dataForm);
                 
                 requestApi('product', 'POST', dataForm, 'application/json').then((res)=>{
                     console.log(res);
                     setLoader(false)
                     refetch()
+                    refetchDefaultAddress()
                     navigate(`/detail-product/${res.data._id}`)
                 })
                 .catch(err=>{
@@ -104,16 +106,16 @@ const AddProduct = () => {
     }
     return (
         <>
-            <div className=" w-[950px] m-auto py-6">
-                <div className=" bg-white rounded-md border p-4 min-h-[600px]">
-                    <div className=" flex gap-8 py-5 px-6">
-                        <div className="w-1/3">
+            <div className=" md:max-w-[950px] m-auto py-6">
+                <div className=" bg-white md:rounded-md border p-4 min-h-[600px]">
+                    <div className=" md:flex gap-8 md:py-5 md:px-6">
+                        <div className="md:w-1/3">
                             <div>
                                 {errorFile && <p className=" bg-red-400 text-center text-white rounded py-1 mb-2"> {errorFile} </p>}
                                 <SelectImage onHandleFile={handleFile} onHandlePrevImages={handlePrevImages} prevImages={prevImages} listFile={listFile} />
                             </div>
                         </div>
-                        <div className="w-2/3">
+                        <div className="md:w-2/3">
                             <div>
                                 <InfoAddProduct onHandleCategory={handleCategory} onSubmitForm={onSubmitForm} onHandleShowdemo={handleShowDemo} />
                             </div>

@@ -17,8 +17,8 @@ const ChatComponent = () => {
   return (
     <div className="  lg:w-[950px] m-auto py-4">
         <div className=" bg-white rounded shadow-md max-h-[650px] h-[80vh]">
-            <div className="flex h-full">
-              <div className=" w-2/5 border-r h-full">
+            <div className="md:flex h-full">
+              <div className={`md:w-2/5 border-r h-full ${idCustomer && 'hidden md:block'}`}>
                 <div className=" h-full flex flex-col">
                     <div className=" p-4">
                       <input type="text" className=" w-full border rounded-md outline-none p-2" placeholder="Nhập số điện thoại...." />
@@ -34,7 +34,7 @@ const ChatComponent = () => {
                     </div>
                 </div>
               </div>
-              <div className=" w-3/5 h-full">
+              <div className={`md:w-3/5 h-full ${!idCustomer && 'hidden md:block'}`}>
                 { idCustomer ? 
                   <ListMessenger idCustomer={idCustomer} onHandleShowListRoom={handleShowListRoom} infoUser={infoUser} />
                 :

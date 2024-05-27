@@ -6,6 +6,9 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook"
 import { SelectLoadingWallet, updateWallet } from "../../../redux/features/wallet"
 import { LoaderContex } from '../../../hook/admin/contexts/loader';
 import { infoUserContext } from "../../../hook/admin/contexts"
+import requestApi from "../../../helper/api"
+import { toast } from "react-toastify"
+import io, { Socket } from 'socket.io-client';
 
 const CheckoutWallet = () => {
     const { topic } = useParams()
@@ -71,8 +74,15 @@ const CheckoutWallet = () => {
                                         <img className=" w-8" src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png" alt="" />
                                     </label>
                                 </div>
+                                <div className="flex gap-2 border rounded p-2">
+                                    <input type="radio" name="payment" id="payment-vnpay"  checked />
+                                    <label htmlFor="payment-vnpay" className=" text-sm flex items-center flex-col">
+                                        Ví VNPay
+                                        <img className=" w-8" src="https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0oxhzjmxbksr1686814746087.png" alt="" />
+                                    </label>
+                                </div>
                                 <div className="flex gap-2 border rounded p-4">
-                                    <input type="radio" name="payment" id="payment-at" checked />
+                                    <input type="radio" name="payment" id="payment-at"/>
                                     <label htmlFor="payment-at">Tại điểm giao dịch</label>
                                 </div>
                             </div>
@@ -87,13 +97,82 @@ const CheckoutWallet = () => {
     )
 }
 
-const SubmitCheckout = ({handleSubmit, wallet, price}: {handleSubmit:()=>void, wallet: wallet, price: number}) => {
+const SubmitCheckout = ({handleSubmit, wallet, price}: {
+    handleSubmit:()=>void, 
+    wallet: wallet, price: number
+}) => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const loadPay = useAppSelector(SelectLoadingWallet)
     const {setLoader} = useContext(LoaderContex)
+    const { infoUser } = useContext(infoUserContext)
     const { refetch } = useGetHistoryByIdWalletQuery(wallet._id)
     const [isSubmit, setIsSubmit] = useState(false)
+    const [socket, setSocket] = useState<Socket>()
+    const createPaymentVNPay = () => {
+        setLoader(true)
+        requestApi('payment-vnpay','POST', { amount: price })
+            .then((data)=>{
+                const newWindow = window.open(data.data.vnpUrl, '_blank', 'width=800,height=600');
+                
+                if (newWindow){
+                    waitForWindowLoad(newWindow,900)
+                }
+            })
+            .catch(()=> {
+                setLoader(false)
+                toast.error('Gặp lỗi')
+                navigate('/wallet')
+            } )
+    }
+
+    const waitForWindowLoad = (checkCloseWindow: Window, time: number) => {
+        const newTime = time - 1
+        if(time == 0) {
+            setLoader(false)
+            toast.error('Hết thời gian nạp tiền')
+            checkCloseWindow.close()
+            return;
+        }
+        if (isSubmit) return
+        if (checkCloseWindow && checkCloseWindow.closed) {
+            setLoader(false)
+        } else {
+          setTimeout(()=>{
+            waitForWindowLoad(checkCloseWindow,newTime)
+          }, 100); // Kiểm tra lại sau mỗi 100ms
+        }
+    };
+    useEffect(() => {
+        const newSocket = io('ws://localhost:3000');
+        newSocket.on('connect', () => {
+            setSocket(newSocket);
+        });
+        return () => {
+            if (socket) {
+                socket.disconnect();
+            }
+        };
+    }, []);
+    useEffect(() => {
+        if (socket) {
+            socket.on('payment', (data) => {
+                
+                if(data.idCustomer == infoUser.sub){
+                    onSubmit();
+                    setIsSubmit(true)
+                    setLoader(false)
+                    toast.success('Nạp tiền thành công')
+                }
+            });
+
+            return () => {
+                socket.disconnect();
+            };
+        }
+    }, [socket]);
     const onSubmit = () =>{
+        
         const payload = {
             id: wallet._id,
             data:{
@@ -101,9 +180,7 @@ const SubmitCheckout = ({handleSubmit, wallet, price}: {handleSubmit:()=>void, w
                 amount: price
             }
         }
-        setLoader(true)
         dispatch(updateWallet(payload))
-        setIsSubmit(true)
     }
     useEffect(()=>{
         if(isSubmit){
@@ -115,7 +192,7 @@ const SubmitCheckout = ({handleSubmit, wallet, price}: {handleSubmit:()=>void, w
         }
     },[handleSubmit, isSubmit, loadPay, refetch, setLoader])
     return (
-        <button onClick={() => { onSubmit() }} className=" font-semibold uppercase rounded-md bg-green-600 text-white m-auto px-4 py-2"> {formatCurrency(price)} -  Thanh toán ngay</button>
+        <button onClick={() => { createPaymentVNPay() }} className=" font-semibold uppercase rounded-md bg-green-600 text-white m-auto px-4 py-2"> {formatCurrency(price)} -  Thanh toán ngay</button>
     )
 }
 

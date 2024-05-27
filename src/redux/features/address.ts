@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import requestApi from '../../helper/api'
 import { RootState } from '../store'
-import { defaultValueDistrict, defaultValueWard, province as typeProvince, district as typeDistrict , ward as typeWard} from '../../util'
+import { defaultValueDistrict, defaultValueWard, province as typeProvince, district as typeDistrict , ward as typeWard, typeAddressInProduct, typeValueSelectAddress} from '../../util'
 
 const province = await requestApi('province', 'GET', {})
 
@@ -26,11 +26,13 @@ export const addressSlide = createSlice({
   },
   reducers: {
     setDistrict: (state, action) => {
-      const newDistrict = state.dataDistrcit.filter((item :typeDistrict)=> item._province_id === action.payload) 
+      console.log(action);
+      
+      const newDistrict = state.dataDistrcit.filter((item :typeDistrict)=>item._province_id === action.payload ) 
       newDistrict ? state.district = newDistrict : state.district = [defaultValueDistrict]
     },
     setWard: (state, action) => {
-      const newWard = state.dataWard.filter((item :typeWard)=> item._district_id === action.payload) 
+      const newWard = state.dataWard.filter((item :typeWard)=> item._district_id === action.payload)
       newWard ? state.ward = newWard : state.ward = [defaultValueWard]
     },
   },
@@ -68,6 +70,21 @@ export const getAddress = (address: { address: string, idProvince: string, idDis
   const wardName = getNameWardById(address.idWard, wardData);
   return `${address.address}, ${wardName}, ${districtName}, ${provinceName}`;
 };
+
+export const getValueSelectAddress = (
+  address: typeAddressInProduct, 
+  districtData: typeDistrict[], 
+  wardData: typeWard[]
+) => {
+  const data : typeValueSelectAddress = {
+    address: address.address,
+    province: province.data.find((item: typeProvince)=> item._id == address.idProvince),
+    district: districtData.find((item)=> item._id == address.idDistrict) || defaultValueDistrict,
+    ward: wardData.find((item)=>item._id == address.idWard) || defaultValueWard,
+    title: '',
+  }
+  return data
+}
 
 export const SelectProvince = (state:RootState) => state.address.province
 export const SelectDistrict = (state:RootState) => state.address.district

@@ -23,7 +23,7 @@ const SlideHome = () => {
         { image: 'https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FBJ2sRQGytbTbBoxCqR3juzBaObXNvsJz9Q9KC8O73gQ%2Fpreset%3Araw%2Fplain%2F930641d458c0e05889f865e35a0edefb-2763757223248164734.jpg&w=256&q=95', name: 'Đăng tin cho tặng' },
     ]
     return (
-        <div className="bg-white p-4 rounded shadow ">
+        <div className="bg-white p-0 md:p-4 rounded shadow ">
             <div className="slide-container">
                 <Slider {...settings}>
                     <div className="w-full " style={{ flex: "0 0 100%", scrollSnapAlign: "start" }}>
@@ -37,7 +37,7 @@ const SlideHome = () => {
                     </div>
                 </Slider>
             </div>
-            <div className='pt-4'>
+            <div className=' md:pt-4 hidden md:block'>
                 <div className=' flex gap-6 justify-between'>
                     {arr.map((item, index) => {
                         return (

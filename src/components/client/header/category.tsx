@@ -27,11 +27,11 @@ const CategoryComponentHeader = () => {
     }
     return (
         <div className=" relative group cursor-pointer">
-            <h2 className="flex gap-2 items-center">
-                <PiListFill /> Danh mục <FaChevronDown />
+            <h2 className="flex gap-2 items-center justify-center text-white">
+                <PiListFill /> <p className="gap-2 items-center hidden lg:flex"> Danh mục <FaChevronDown /></p>
             </h2>
-            <div ref={elementCate} className="group-hover:block hidden absolute z-20 pt-5">
-                <div className=" bg-white w-[320px] shadow-md rounded-md overflow-hidden">
+            <div ref={elementCate} className="group-hover:block hidden absolute z-20 pt-5 md:-left-20 lg:left-0">
+                <div className=" bg-white text-black w-[320px] shadow-md rounded-md overflow-hidden">
                     {listCategory.map((item: Category, index) => {
                         return (
                             <Link

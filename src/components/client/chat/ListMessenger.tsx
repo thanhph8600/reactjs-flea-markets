@@ -5,9 +5,10 @@ import requestApi from "../../../helper/api";
 import io, { Socket } from 'socket.io-client';
 import { Messenger } from "../../../util";
 import { User } from "../../../hook/admin/contexts/info";
-import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { IoArrowUndoSharp, IoCheckmarkDoneOutline } from "react-icons/io5";
 import ItemMessenger from "./itemMess/itemMessenger";
 import InputSendMessenger from "./itemMess/inputSendMessenger";
+import { Link } from "react-router-dom";
 
 const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
     idCustomer: string,
@@ -110,6 +111,9 @@ const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
                         <img className=" w-full h-full rounded-full object-cover bg-red-200" src={infoCustomer.avata} alt="" />
                     </div>
                     <h4 className=" font-semibold text-base"> {infoCustomer.name} </h4>
+                    <Link to={'/chat'} className=" ml-auto md:hidden p-2">
+                    <IoArrowUndoSharp />
+                    </Link>
                 </div>
             }
             <div ref={divRef} className=" p-4 flex-1 overflow-y-auto">

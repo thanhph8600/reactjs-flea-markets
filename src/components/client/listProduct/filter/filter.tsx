@@ -36,8 +36,8 @@ const FilterProduct = ({ onHandleValueAddress, onHandleFilterPrice, filterAddres
   };
 
   return (
-    <div className=" flex gap-2">
-      <div className="flex gap-2 items-center border-r px-2">
+    <div className=" flex gap-2 flex-col sm:flex-row">
+      <div className=" hidden sm:flex gap-2 items-center border-r px-2">
         <p className="text-lg"><CiFilter /></p>
         <p className="">Lọc</p>
       </div>
@@ -61,16 +61,16 @@ const FilterProduct = ({ onHandleValueAddress, onHandleFilterPrice, filterAddres
       </div>
 
       <div className=" relative">
-        <div className=" px-4 py-2 border rounded-xl flex items-center gap-2 justify-center">
+        <div onClick={() => setShowFilterPrice(!showtFillterPrice)} className=" cursor-pointer px-4 py-2 border rounded-xl flex items-center gap-2 justify-center">
           {typeof filterPrice.min != "number" || !filterPrice.max ?
             <button
-              onClick={() => setShowFilterPrice(!showtFillterPrice)}
+              
               className="flex items-center gap-2 justify-center">
               Giá
               <FaCaretDown />
             </button> :
             <div
-              onClick={() => setShowFilterPrice(!showtFillterPrice)}
+              
               className=" cursor-pointer pr-2 text-[#ff8800] font-semibold">
               {formatCurrency(filterPrice.min)} - {formatCurrency(filterPrice.max)}
             </div>}
@@ -84,10 +84,6 @@ const FilterProduct = ({ onHandleValueAddress, onHandleFilterPrice, filterAddres
           </div>
         }
       </div>
-      <button className=" px-4 py-2 border rounded-xl flex items-center gap-2 justify-center">
-        Tình trạng
-        <FaCaretDown />
-      </button>
     </div>
   )
 }

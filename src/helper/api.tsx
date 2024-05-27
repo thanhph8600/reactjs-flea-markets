@@ -27,7 +27,6 @@ export default function requestApi(
         return response;
     }, async (error) => {
         const originalRequest = error.config;
-        console.log(error.response.status);
         
         if (error.response && error.response.status === 499 ) {
             console.log('access token expired');

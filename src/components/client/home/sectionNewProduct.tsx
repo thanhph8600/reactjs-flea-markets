@@ -18,7 +18,7 @@ const SectionNewProduct = () => {
         <>
             <div className="bg-white p-4 rounded shadow ">
                 <h3 className="text-base font-semibold">Tin đăng mới</h3>
-                <div className=" grid grid-cols-5 py-4">
+                <div className=" grid grid-cols-2 sm:grid-cols-4 py-4 md:grid-cols-5">
                     { !isLoading ? products && products.map((_item, index) => {
                         return <ItemProductGrid key={index} itemProduct={_item}/>
                     }):

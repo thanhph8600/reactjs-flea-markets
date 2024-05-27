@@ -10,10 +10,10 @@ const DetailProduct = () => {
     const { data: product, isLoading, isSuccess } = useGetProductByIDQuery(id)
     
     return (
-        <div className=" w-[950px] m-auto py-4">
+        <div className=" md:w-[950px] w-auto m-auto py-4">
             <div className=" bg-white p-3 rounded-md shadow-md">
-                <div className="flex gap-4 relative">
-                    <div className=" w-2/3">
+                <div className="md:flex gap-4 relative flex-wrap lg:flex-nowrap">
+                    <div className=" md:w-2/3">
                         <div>
                             {!isLoading && isSuccess ?
                                 <DemoProduct product={product} /> :
@@ -41,7 +41,7 @@ const DetailProduct = () => {
                             }
                         </div>
                     </div>
-                    <div className=" w-1/3 border-t pr-3 pt-4 ">
+                    <div className=" md:w-1/3 border-t pr-3 pt-4 ">
                         {!isLoading && isSuccess ?
                             <div className=" sticky top-0 left-0">
                                 <InfoSeller customer={product.id_customer[0]} idProduct={product._id} />

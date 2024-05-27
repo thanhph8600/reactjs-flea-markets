@@ -51,7 +51,7 @@ const DemoProduct = ({ product }: {
             </div>
 
             <h4 className=" text-base font-semibold pt-4">Thông số kỹ thuật</h4>
-            <div className=" grid grid-cols-2 gap-4 text-sm pt-2 pb-4">
+            <div className=" grid md:grid-cols-2 gap-4 text-sm pt-2 pb-4">
                 {specifications && Object.keys(specifications).map((key, index) => {
                     return <div key={index}>
                         {key}: {specifications[key]}

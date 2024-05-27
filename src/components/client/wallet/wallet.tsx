@@ -16,15 +16,15 @@ const Wallet = () => {
     }
     return (
         <div className=" py-8" >
-            <div className=" w-[950px] m-auto">
+            <div className=" md:max-w-[950px]  m-auto">
                 { !isLoading && isSuccess && wallet &&
-                 <div className=" flex justify-between">
+                 <div className=" px-3 md:px-0 md:flex justify-between">
                     <div className="">
                         <p className=" text-gray-500 font-semibold text-base">Xin chào,</p>
                         <h4 className=" py-2 font-semibold text-2xl"> {wallet.id_customer[0].name} </h4>
                     </div>
                     <div className="">
-                        <p className=" text-gray-500 font-semibold text-end text-base">Tài khoản định danh</p>
+                        <p className=" text-gray-500 font-semibold md:text-end text-base">Tài khoản định danh</p>
                         <h4 className=" py-2 font-semibold text-xl">  {wallet._id}</h4>
                     </div>
                 </div>}
@@ -45,12 +45,12 @@ const Wallet = () => {
                     </div>
                 </div>
                 <div className=" my-4">
-                    <div className=" flex gap-2">
-                        <div className=" w-2/3 bg-white rounded shadow-md p-4">
+                    <div className="flex gap-2 flex-col md:flex-row">
+                        <div className=" md:w-2/3 bg-white md:rounded shadow-md p-4">
                             { !isLoading && isSuccess && wallet && 
                             <DetailWallet wallet={wallet} />}
                         </div>
-                        <div className=" w-1/3 bg-white rounded shadow-md p-4">
+                        <div className=" md:w-1/3 bg-white md:rounded shadow-md p-4">
                             <HistoryWallet idCustomer={infoUser.sub} />
                         </div>
                     </div>

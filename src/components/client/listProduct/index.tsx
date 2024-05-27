@@ -60,18 +60,21 @@ const ListProductClient = () => {
   return (
     <>
       <div className=" py-2 bg-white">
-        <div className="w-[950px] m-auto text-sm">
+        <div className="lg:w-[950px] m-auto text-sm">
+          <div className="md:w-[600px]  md:m-auto lg:m-0">
+
           <FilterProduct
             onHandleValueAddress={handleValueAddress}
             filterAddress={filterAddress}
             onHandleFilterPrice={handleFilterPrice}
             filterPrice={filterPrice}
           />
+          </div>
         </div>
       </div>
 
-      <div className="w-[950px] m-auto">
-        <div className="py-2">
+      <div className="lg:w-[950px] w-full m-auto">
+        <div className="py-2 px-4 md:px-0 md:w-[600px]  md:m-auto lg:m-0">
           <div className=" py-2 flex gap-2 items-center text-sm">
             <Link to={'/'} >Chợ cũ</Link>
             <FaAngleDoubleRight />
@@ -80,8 +83,8 @@ const ListProductClient = () => {
         </div>
       </div>
 
-      <div className="w-[950px] m-auto">
-        <div className="w-[600px]">
+      <div className="lg:w-[950px]  m-auto">
+        <div className="md:w-[600px]  md:m-auto lg:m-0">
 
           {showCategoryDetail && <div className=" p-4 bg-white shadow-sm rounded-sm my-2">
             <ListCategory listCategoryDetail={listCategoryDetailShow} />

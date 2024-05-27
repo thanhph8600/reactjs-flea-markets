@@ -43,12 +43,12 @@ const SelectImage = ({onHandleFile, onHandlePrevImages, prevImages, listFile}: {
     return (
         <>
             <h4 className=" text-base font-semibold">Hình ảnh sản phẩm</h4>
-            <p className=" text-base pt-3 text-red-500">{errorFile}</p>
+            <p className=" text-base md:pt-3 text-red-500">{errorFile}</p>
             <div className=" py-4">
                 {prevImages.length == 0 &&
                     <div
                         onClick={() => { handleClick() }}
-                        className="bg-gray-50 w-72 text-center px-4 rounded flex flex-col items-center justify-center cursor-pointer border-2 border-gray-400 border-dashed mx-auto font-[sans-serif]">
+                        className="bg-gray-50 md:w-72 text-center px-4 rounded flex flex-col items-center justify-center cursor-pointer border-2 border-gray-400 border-dashed mx-auto font-[sans-serif]">
                         <div className="py-6">
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-10 mb-2 fill-gray-600 inline-block" viewBox="0 0 32 32">
                                 <path

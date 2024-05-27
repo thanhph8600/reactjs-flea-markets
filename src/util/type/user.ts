@@ -5,6 +5,7 @@ export type User = {
     phone: string,
     role: number,
     avata: string,
+    isBan: boolean,
 }
 export const defaultValueUser = {
     _id: '',
@@ -12,5 +13,6 @@ export const defaultValueUser = {
     email: '',
     phone: '',
     role: 0,
-    avata: ''
+    avata: '',
+    isBan: false,
 }

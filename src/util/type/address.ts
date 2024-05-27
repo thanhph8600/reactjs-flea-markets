@@ -46,7 +46,7 @@ export const defaultValueWard = {
     _district_id: '',
 }
 
-export const defaultValueSelectAddress = {
+export const defaultValueSelectAddress:typeValueSelectAddress = {
     title: 'tỉnh thành',
     province: defaultValueProvince,
     district: defaultValueDistrict,

@@ -4,7 +4,7 @@ const FooterClient = () => {
         <>
             <div className=" py-6 border-y">
                 <div className="lg:w-[950px] m-auto mb-6">
-                    <div className="flex gap-5 justify-between text-xs">
+                    <div className="flex gap-5 px-2 justify-between text-xs">
                         <div className="flex flex-col gap-2">
                             <h2 className=" text-sm font-semibold">Hỗ trợ khách hàng</h2>
                             <p>Trung tâm trợ giúp</p>

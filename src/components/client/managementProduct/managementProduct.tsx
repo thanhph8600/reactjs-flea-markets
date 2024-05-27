@@ -14,13 +14,13 @@ const ManagementProduct = () => {
     const navigate = useNavigate()
     const { infoUser } = useContext(infoUserContext)
     const { idProduct } = useParams()
-    const { data: products, isSuccess, refetch } = useGetProductByCusomterQuery()
+    const { data: products, isSuccess, refetch } = useGetProductByCusomterQuery(infoUser.sub)
     const { refetch: refetchListProduct } = useGetAllProductQuery()
     const [listProduct, setListProduct] = useState([] as TypeProduct[])
     const [select, setSelect] = useState('')
     const dispatch = useAppDispatch()
     const loadingUpdateProduct = useAppSelector(SelectLoadingProduct)
-    const {data: wallet} = useGetWalletQuery()
+    const {data: wallet} = useGetWalletQuery(infoUser.sub)
     const classSelect = {
         active: "font-semibold px-6 py-2 cursor-pointer border-b-4 border-b-[#ff8800]",
         unActive: "font-semibold px-6 text-gray-400 py-2 cursor-pointer"
@@ -66,7 +66,7 @@ const ManagementProduct = () => {
     }
     
     return (
-        <div className=" w-[950px] m-auto py-6">
+        <div className=" lg:w-[950px] max-w-[950px] m-auto py-6">
             <div className="bg-white rounded shadow-md">
                 <div className="py-4 flex items-center justify-between">
                     <div className=" px-4 flex items-center gap-2">

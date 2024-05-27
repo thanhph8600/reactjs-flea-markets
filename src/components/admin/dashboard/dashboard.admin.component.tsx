@@ -1,8 +1,10 @@
-const Dashboard = () =>{
+const Dashboard = () => {
     return (
         <div>
-            <a href="/user">user</a>
-            <h2>Dashboard</h2>
+            <div className="border p-4 rounded-md shadow-lg">
+                <div className=" bg-white flex flex-col gap-1">
+                </div>
+            </div>
         </div>
     )
 }

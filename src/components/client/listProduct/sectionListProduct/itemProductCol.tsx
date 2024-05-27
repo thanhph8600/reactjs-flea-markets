@@ -10,8 +10,8 @@ const ItemProductCol = ({ itemProduct, fillterAddress }: { itemProduct: TypeProd
     const ward = useAppSelector(SelectDataWard)
     return (
         <Link to={`/detail-product/${itemProduct._id}`} className=" hover:shadow-xl p-3 border-b cursor-pointer flex gap-3">
-            <div className=" w-1/4 h-30">
-                <img className=" object-cover h-30" src={itemProduct.thumbnail[0]} alt="" />
+            <div className=" w-1/4 h-32 ">
+                <img className=" object-cover m-auto h-full" src={itemProduct.thumbnail[0]} alt="" />
             </div>
             <div className=" w-3/4 py-2 flex gap-2 flex-col">
                 <p className=" text-sm truncate">{itemProduct.title} </p>
