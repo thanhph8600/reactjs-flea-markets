@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': {}
+  },
+  esbuild: {
+    target: 'ESNext'
   }
 })

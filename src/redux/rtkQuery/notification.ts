@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { getToken} from '../../util'
 import { Notification } from '../../util/type/notification';
+import { apiUrl } from '../../config';
 
 export const notificationSlice = createApi({
     reducerPath: 'notificationQuery',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3000/',
+        baseUrl: apiUrl,
         prepareHeaders: (headers) => {
             // Thêm các thông tin header cần thiết vào đây
             const token = getToken('access_token');

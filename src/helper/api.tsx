@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { apiUrl } from "../config";
 
 const defaultHeaders = {
     "Accept": 'application/json',
@@ -13,7 +14,6 @@ export default function requestApi(
     contenType?: string,
     responseType: AxiosRequestConfig['responseType'] = 'json'
 ) {
-    const url = 'http://localhost:3000/'
     if(contenType){
         defaultHeaders["Content-Type"] = contenType
     }
@@ -33,7 +33,7 @@ export default function requestApi(
             try {
                 const refresh_token = localStorage.getItem('refresh_token');
                 if (!refresh_token) throw new Error('refresh token not found'); 
-                const result = await instance.post(`${url}auth/refresh-token`, { refresh_token });
+                const result = await instance.post(`${apiUrl}auth/refresh-token`, { refresh_token });
                 localStorage.setItem('access_token', result.data.access_token);
                 localStorage.setItem('refresh_token', result.data.refresh_token);
                 originalRequest.headers['Authorization'] = `Bearer ${result.data.access_token}`;
@@ -51,7 +51,7 @@ export default function requestApi(
 
     return instance.request({
         method: method,
-        url: `${url}${endpoint}`,
+        url: `${apiUrl}${endpoint}`,
         data: body,
         responseType: responseType
     });

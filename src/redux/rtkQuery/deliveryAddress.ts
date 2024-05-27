@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { deliveryAddress, getToken } from '../../util'
+import { apiUrl } from '../../config';
 
 export const deliveryAddressSlice = createApi({
   reducerPath: 'deliveryAddressQuery',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/',
+    baseUrl: apiUrl,
     prepareHeaders: (headers) => {
         // Thêm các thông tin header cần thiết vào đây
         const token = getToken('access_token');

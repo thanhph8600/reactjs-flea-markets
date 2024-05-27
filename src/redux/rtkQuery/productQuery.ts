@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { getToken, TypeProduct, TypeProductUpdate } from '../../util'
+import { apiUrl } from '../../config';
 
 export const productSlice = createApi({
   reducerPath: 'productQuery',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/',
+    baseUrl: apiUrl,
     prepareHeaders: (headers) => {
       // Thêm các thông tin header cần thiết vào đây
       const token = getToken('access_token');
