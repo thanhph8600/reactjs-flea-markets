@@ -5,7 +5,7 @@ import { useGetdeliveryAddressByIddeliveryQuery, useGetdeliveryAddressIsDefaultQ
 import Popup from "../../../admin/popup"
 import {  deliveryAddress} from "../../../../util"
 import {  useAppSelector } from "../../../../redux/hook"
-import { getAddress, SelectDataDistrict, SelectDataWard } from "../../../../redux/features/address"
+import { getAddress, SelectDataDistrict, SelectDataWard, SelectProvince } from "../../../../redux/features/address"
 import ListDeliveryAddress from "./listDeliveryAddress"
 import CreateDeliveryAddress from "./createDeliveryAddress"
 
@@ -24,6 +24,8 @@ const DeliveryAddress = memo(function ({onHandleDeliveryAddress}: { onHandleDeli
             onHandleDeliveryAddress(defaultdeliveryAddress[0])
         }
     }, [defaultdeliveryAddress, isLoadingDefaultAddress, isSuccessDefaultAddress])
+    
+    const provinces = useAppSelector(SelectProvince)
     const district = useAppSelector(SelectDataDistrict)
     const ward = useAppSelector(SelectDataWard)
     const [showCreateAddress, setShowCreateAddress] = useState(false)
@@ -54,7 +56,7 @@ const DeliveryAddress = memo(function ({onHandleDeliveryAddress}: { onHandleDeli
             {!isLoadingDefaultAddress && isSuccessDefaultAddress && deliveryAddress.length != 0 ?
                 <div className=" py-2">
                     <p className=" text-sm pb-1"> {deliveryAddress[0].name}  | {deliveryAddress[0].phone}</p>
-                    <p className=" text-sm text-gray-500"> {getAddress(deliveryAddress[0].address, district, ward)} </p>
+                    <p className=" text-sm text-gray-500"> {getAddress(deliveryAddress[0].address, provinces, district, ward)} </p>
                 </div> :
                 <div className=" text-sm py-2 flex flex-col gap-2 text-gray-500">
                     <p>Bạn chưa chọn địa chỉ nhận hàng</p>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getAddress, SelectDataDistrict, SelectDataWard } from "../../../redux/features/address"
+import { getAddress, SelectDataDistrict, SelectDataWard, SelectProvince } from "../../../redux/features/address"
 import { useAppSelector } from "../../../redux/hook"
 import { formatCurrency, TypeProduct } from "../../../util"
 import { format } from 'date-fns';
@@ -10,6 +10,7 @@ const ListMyProduct = ({ product, onHandleStatusProduct }: {
     product: TypeProduct
     onHandleStatusProduct: (id: string, status: string) => void
 }) => {
+    const province = useAppSelector(SelectProvince)
     const district = useAppSelector(SelectDataDistrict)
     const ward = useAppSelector(SelectDataWard)
     const [showPopup, setShowPopup] = useState(false)
@@ -28,7 +29,7 @@ const ListMyProduct = ({ product, onHandleStatusProduct }: {
                             <div className=" text-sm flex flex-col gap-2">
                                 <Link to={`/detail-product/${product._id}`} className=" font-semibold"> {product.title} </Link>
                                 <p className=" font-semibold text-red-500">{formatCurrency(product.price)}</p>
-                                <p className=" text-xs text-gray-500"> {getAddress(product.address, district, ward)} </p>
+                                <p className=" text-xs text-gray-500"> {getAddress(product.address, province, district, ward)} </p>
                                 <p className=" text-xs text-gray-500">
                                     Ngày đăng tin:
                                     <span className=" text-black"> {format(product.created_at, 'dd/MM/yyyy')} </span>

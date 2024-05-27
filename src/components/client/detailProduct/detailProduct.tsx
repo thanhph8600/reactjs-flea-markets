@@ -1,12 +1,10 @@
-import { useParams } from "react-router-dom"
 import DemoProduct from "./demoProduct";
 import '../../../assets/slideHome.css'
 import InfoSeller from "./infoSeller";
 import { useGetProductByIDQuery } from "../../../redux/rtkQuery/productQuery";
 
 
-const DetailProduct = () => {
-    const { id } = useParams()
+const DetailProduct = ({id}:{id:string}) => {
     const { data: product, isLoading, isSuccess } = useGetProductByIDQuery(id)
     
     return (

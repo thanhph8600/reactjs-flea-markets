@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useGetProductByIDQuery } from "../../../redux/rtkQuery/productQuery"
 import { useContext, useEffect, useState } from "react"
 import { infoUserContext } from "../../../hook/admin/contexts"
@@ -11,8 +11,7 @@ import { LoaderContex } from "../../../hook/admin/contexts/loader"
 import requestApi from "../../../helper/api"
 import { toast } from "react-toastify"
 
-const EditProduct = () => {
-  const { idProduct } = useParams()
+const EditProduct = ({idProduct}:{idProduct: string}) => {
   const navigate = useNavigate()
   const { infoUser } = useContext(infoUserContext)
   const { data: product, isSuccess, refetch } = useGetProductByIDQuery(idProduct)

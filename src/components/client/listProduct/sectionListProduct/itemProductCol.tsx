@@ -1,11 +1,12 @@
 import { CiLocationOn } from "react-icons/ci"
 import { Link } from "react-router-dom"
 import { formatCurrency, TypeProduct, typeValueSelectAddress } from "../../../../util"
-import { SelectDataDistrict, SelectDataWard } from "../../../../redux/features/address"
+import { SelectDataDistrict, SelectDataWard, SelectProvince } from "../../../../redux/features/address"
 import { handleShowAddressByFillterAddress } from "./setProductByCategory"
 import { useAppSelector } from "../../../../redux/hook"
 
 const ItemProductCol = ({ itemProduct, fillterAddress }: { itemProduct: TypeProduct,fillterAddress : typeValueSelectAddress }) => {
+    const province = useAppSelector(SelectProvince)
     const district = useAppSelector(SelectDataDistrict)
     const ward = useAppSelector(SelectDataWard)
     return (
@@ -18,7 +19,7 @@ const ItemProductCol = ({ itemProduct, fillterAddress }: { itemProduct: TypeProd
                 <p className=" text-base text-red-600 font-semibold">{formatCurrency(itemProduct.price)} </p>
                 <p className=" text-gray-500 text-xs flex gap-1">
                     <CiLocationOn /> 
-                    {handleShowAddressByFillterAddress(itemProduct.address,fillterAddress,district,ward)}
+                    {handleShowAddressByFillterAddress(itemProduct.address,fillterAddress,province,district,ward)}
                 </p>
             </div>
         </Link>

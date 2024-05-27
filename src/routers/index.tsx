@@ -15,12 +15,10 @@ import NotFoundPage from '../pages/not-found-page';
 import Home from '../components/client/home/home';
 import ClientLayout from '../layouts/clients/client.layout';
 import ListProductClient from '../components/client/listProduct';
-import DetailProduct from '../components/client/detailProduct/detailProduct';
 import DetailCustomer from '../components/client/customer/detailCustomer';
 import Login from '../components/client/login/login';
 import Register from '../components/client/login/register';
 import AddProduct from '../components/client/addProduct/addProduct';
-import EditProduct from '../components/client/editProduct/editProduct';
 import ManagementProduct from '../components/client/managementProduct/managementProduct';
 import ChatComponent from '../components/client/chat/chatComponent';
 import Wallet from '../components/client/wallet/wallet';
@@ -28,6 +26,8 @@ import CheckoutWallet from '../components/client/wallet/checkoutWallet';
 import OrderConfirmation from '../components/client/buy-now/orderConfirmation';
 import BuyerComponent from '../components/client/my-orders/buyer';
 import SellerComponent from '../components/client/my-orders/seller';
+import GetIDproduct from '../components/client/detailProduct/getIDproduct';
+import GetIDproductEdit from '../components/client/editProduct/getIDproductEdit';
 const Router = () => {
   return (
     <Routes>
@@ -36,14 +36,14 @@ const Router = () => {
           <Route element={<ClientPubliceRouter />} >
             <Route path="/" element={<Home />} />
             <Route path="/:slug" element={<ListProductClient />} />
-            <Route path="/detail-product/:id" element={<DetailProduct />} />
+            <Route path="/detail-product/:id" element={<GetIDproduct />} />
             <Route path="/customer/:id" element={<DetailCustomer />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Route>
           <Route element={<ClientPrivateRouter />} >
             <Route path="/dang-tin" element={<AddProduct />} />
-            <Route path="/cap-nhat-tin/:idProduct" element={<EditProduct />} />
+            <Route path="/cap-nhat-tin/:idProduct" element={<GetIDproductEdit />} />
             <Route path="/my-ads" element={<ManagementProduct />} />
             <Route path="/my-ads/:idProduct" element={<ManagementProduct />} />
             <Route path="/chat" element={<ChatComponent />} />

@@ -36,10 +36,7 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress, onHandlePop
             setSelect({ ...select, title: 'xã phường' })
         }
     }
-    const handleListShow = (name: string) => {
-        console.log(name);
 
-    }
     const handleSelect = (id: string, action: string) => {
         setIsShowList(false)
 
@@ -69,13 +66,13 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress, onHandlePop
                     <p className="text-lg  text-center font-semibold">Địa chỉ</p>
                     <div>
                         <div className="flex flex-col gap-4 py-4">
-                            <SelectItemAddressJSX handleShow={handleShow} name={select.province._name} address='province' />
+                            <SelectItemAddressJSX handleShow={handleShow} name={select.province._name} address='province' onHandleSelect={handleSelect} />
                             {select.province._name ?
-                                <SelectItemAddressJSX handleShow={handleShow} name={select.district._name} address='district' />
+                                <SelectItemAddressJSX handleShow={handleShow} name={select.district._name} address='district' onHandleSelect={handleSelect}/>
                                 : <SelectDefault name="quận huyện" />}
 
                             {select.district._name ?
-                                <SelectItemAddressJSX handleShow={handleShow} name={select.ward._name} address='ward' />
+                                <SelectItemAddressJSX handleShow={handleShow} name={select.ward._name} address='ward' onHandleSelect={handleSelect} />
                                 : <SelectDefault name="xã phường" />}
                             {
                                 select.ward._name ? 
@@ -91,7 +88,7 @@ const FillterAddress = ({ onHandleShowFillterAddress, filterAddress, onHandlePop
                     </div>
                 </div>
                 :
-                <ListValueSelect title={select.title} listShow={listShow} setIsShowList={setIsShowList} handleListShow={handleListShow} handleSelect={handleSelect} />
+                <ListValueSelect title={select.title} listShow={listShow} setIsShowList={setIsShowList}  handleSelect={handleSelect} />
             }
         </>
     )

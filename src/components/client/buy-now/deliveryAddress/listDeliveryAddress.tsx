@@ -3,7 +3,7 @@ import { infoUserContext } from "../../../../hook/admin/contexts"
 import { deliveryAddress } from "../../../../util"
 import { useGetdeliveryAddressByIddeliveryQuery } from "../../../../redux/rtkQuery/deliveryAddress"
 import { useAppDispatch, useAppSelector } from "../../../../redux/hook"
-import { getAddress, SelectDataDistrict, SelectDataWard } from "../../../../redux/features/address"
+import { getAddress, SelectDataDistrict, SelectDataWard, SelectProvince } from "../../../../redux/features/address"
 import { deleteDeleveryAddress } from "../../../../redux/features/deliveryAddress"
 import { IoClose } from "react-icons/io5"
 import { MdDelete } from "react-icons/md"
@@ -18,6 +18,7 @@ const ListDeliveryAddress = ({ list, onHandlePopup, onHandlePopupCreateAddress, 
     const {infoUser} = useContext(infoUserContext)
     const { refetch } = useGetdeliveryAddressByIddeliveryQuery(infoUser.sub)
     const dispatch = useAppDispatch()
+    const provinces = useAppSelector(SelectProvince)
     const district = useAppSelector(SelectDataDistrict)
     const ward = useAppSelector(SelectDataWard)
     const deleteDelivery = (item: deliveryAddress) => {
@@ -51,7 +52,7 @@ const ListDeliveryAddress = ({ list, onHandlePopup, onHandlePopupCreateAddress, 
                                             {item.isDefault && <span className=" text-sm pl-2 font-normal text-[#ff8800]"> - Địa chỉ mặc định</span>} 
                                         </p>
                                         <p> {item.phone} </p>
-                                        <p> {getAddress(item.address, district, ward)} </p>
+                                        <p> {getAddress(item.address,provinces, district, ward)} </p>
                                     </div>
                                 </div>
                                 <div onClick={() => deleteDelivery(item)} className=" text-xl text-gray-600 hover:text-[#ff8800] cursor-pointer">

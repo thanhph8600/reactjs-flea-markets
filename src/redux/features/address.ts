@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import requestApi from '../../helper/api'
 import { RootState } from '../store'
-import { defaultValueDistrict, defaultValueWard, province as typeProvince, district as typeDistrict , ward as typeWard, typeAddressInProduct, typeValueSelectAddress} from '../../util'
+import { defaultValueDistrict, defaultValueWard, province as typeProvince, district as typeDistrict , ward as typeWard, typeAddressInProduct, typeValueSelectAddress, defaultValueProvince} from '../../util'
 
-const province = await requestApi('province', 'GET', {})
+export const fetchProvince = createAsyncThunk('address/fetchProvince', async () => {
+  const response = await requestApi('province', 'GET', {})
+  return response.data
+})
 
 export const fetchDistrict = createAsyncThunk('address/fetchDistrict', async () => {
   const response = await requestApi('district', 'GET', {})
-  console.log(response);
   return response.data
 })
 export const fetchWard = createAsyncThunk('address/fetchWard', async () => {
@@ -18,7 +20,7 @@ export const fetchWard = createAsyncThunk('address/fetchWard', async () => {
 export const addressSlide = createSlice({
   name: 'address',
   initialState: {
-    province: province.data as typeProvince[],
+    province: [defaultValueProvince],
     dataDistrcit : [defaultValueDistrict],
     dataWard: [defaultValueWard],
     district: [defaultValueDistrict],
@@ -38,6 +40,9 @@ export const addressSlide = createSlice({
   },
   extraReducers(builder) {
     builder
+        .addCase(fetchProvince.fulfilled, (state, action) => {
+          state.province = action.payload
+        })
         .addCase(fetchDistrict.fulfilled, (state, action) => {
             state.dataDistrcit = action.payload
         })
@@ -49,8 +54,8 @@ export const addressSlide = createSlice({
 
 export const { setDistrict, setWard } = addressSlide.actions
 
-export const getNameProvinceById = (id: string)=> {
-  const itemProvince = province.data.find((item:typeProvince)=> item._id == id)
+export const getNameProvinceById = (id: string,province: typeProvince[])=> {
+  const itemProvince = province.find((item:typeProvince)=> item._id == id)
   return itemProvince ? itemProvince._name : '';
 }
 
@@ -64,8 +69,8 @@ export const getNameWardById = (id: string, wardData: typeWard[]) => {
   return itemWard ? itemWard._name : '';
 };
 
-export const getAddress = (address: { address: string, idProvince: string, idDistrict: string, idWard: string }, districtData: typeDistrict[], wardData: typeWard[]) => {
-  const provinceName = getNameProvinceById(address.idProvince);
+export const getAddress = (address: { address: string, idProvince: string, idDistrict: string, idWard: string },province: typeProvince[], districtData: typeDistrict[], wardData: typeWard[]) => {
+  const provinceName = getNameProvinceById(address.idProvince, province);
   const districtName = getNameDistrictById(address.idDistrict, districtData);
   const wardName = getNameWardById(address.idWard, wardData);
   return `${address.address}, ${wardName}, ${districtName}, ${provinceName}`;
@@ -73,12 +78,13 @@ export const getAddress = (address: { address: string, idProvince: string, idDis
 
 export const getValueSelectAddress = (
   address: typeAddressInProduct, 
+  province: typeProvince[],
   districtData: typeDistrict[], 
   wardData: typeWard[]
 ) => {
   const data : typeValueSelectAddress = {
     address: address.address,
-    province: province.data.find((item: typeProvince)=> item._id == address.idProvince),
+    province: province.find((item: typeProvince)=> item._id == address.idProvince) || defaultValueProvince,
     district: districtData.find((item)=> item._id == address.idDistrict) || defaultValueDistrict,
     ward: wardData.find((item)=>item._id == address.idWard) || defaultValueWard,
     title: '',

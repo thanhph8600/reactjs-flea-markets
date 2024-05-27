@@ -4,7 +4,8 @@ import { MdDelete } from "react-icons/md"
 
 const SelectItemAddressJSX = ({ handleShow, name, address, onHandleSelect }: { 
     handleShow: (address: string) => void, 
-    name: string, address: string 
+    name: string, 
+    address: string,
     onHandleSelect: (id: string, action: string) => void;
 }) => {
     const [nameAddress, setNameAddress] = useState('tỉnh thành')

@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { getAddress, SelectDataDistrict, SelectDataWard } from "../../../redux/features/address"
+import { getAddress, SelectDataDistrict, SelectDataWard, SelectProvince } from "../../../redux/features/address"
 import { useAppSelector } from "../../../redux/hook"
 import { formatCurrency, typeOrder } from "../../../util"
 import { FaLocationDot } from "react-icons/fa6"
@@ -13,6 +13,7 @@ const ItemComponentOrder = ({ itemOrder, }: {
 }) => {
     const { infoUser } = useContext(infoUserContext)
     const { id_product, id_buyer, id_seller, status, _id } = itemOrder
+    const province = useAppSelector(SelectProvince)
     const district = useAppSelector(SelectDataDistrict)
     const ward = useAppSelector(SelectDataWard)
     const cancelOrder = (status: string) => {
@@ -44,7 +45,7 @@ const ItemComponentOrder = ({ itemOrder, }: {
                     <p>Số điện thoại: {id_buyer[0].phone} </p>
                     <p className=" flex gap-1  text-xs text-gray-600">
                         <FaLocationDot />
-                        {getAddress(itemOrder.address, district, ward)}
+                        {getAddress(itemOrder.address, province, district, ward)}
                     </p>
                 </div>
                 {status != 'cancel_exp' && status != 'delivered' && status != 'successful_delivery'  &&

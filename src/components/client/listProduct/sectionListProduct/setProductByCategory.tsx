@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState } from "react";
 import { useGetProductByIdCategoryQuery } from "../../../../redux/rtkQuery/productQuery"
-import { defaultValueSelectAddress, district, typeAddressInProduct, TypeProduct, typeValueSelectAddress, ward } from "../../../../util";
+import { defaultValueSelectAddress, district, province, typeAddressInProduct, TypeProduct, typeValueSelectAddress, ward } from "../../../../util";
 import SectionListProduct from "./listProduct"
 import { getNameDistrictById, getNameProvinceById, getNameWardById } from "../../../../redux/features/address";
 
@@ -52,12 +52,13 @@ export const handleProductByFillterAddress = (
 export const handleShowAddressByFillterAddress = (
   address: typeAddressInProduct,
   fillterAddress: typeValueSelectAddress = defaultValueSelectAddress,
+  province: province[],
   district: district[],
   ward: ward[]
 ) => {
 
   if (fillterAddress.title == 'tỉnh thành') {
-    if (fillterAddress.province._id == '') return getNameProvinceById(address.idProvince)
+    if (fillterAddress.province._id == '') return getNameProvinceById(address.idProvince,province)
     return getNameDistrictById(address.idDistrict, district)
   }
   if (fillterAddress.title == 'quận huyện') {

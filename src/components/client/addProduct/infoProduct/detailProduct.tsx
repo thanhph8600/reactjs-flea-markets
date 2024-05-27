@@ -46,7 +46,7 @@ const InfoAddProduct = ({onHandleCategory,onSubmitForm,onHandleShowdemo}:{
             const district = districts.find((item: district) => item._id == defaultDelivery[0].address.idDistrict)
             dispatch(setDistrict(province?.id))
             dispatch(setWard(district?.id))
-            setFillterAddress(getValueSelectAddress(defaultDelivery[0].address, districts,wards))
+            setFillterAddress(getValueSelectAddress(defaultDelivery[0].address,provinces, districts,wards))
         }
     },[defaultDelivery, dispatch, districts, isLoading, isSuccess, provinces, wards])
     const handleShowSelectCategory = () => {

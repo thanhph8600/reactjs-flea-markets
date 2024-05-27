@@ -9,5 +9,8 @@ export default defineConfig({
   },
   esbuild: {
     target: 'ESNext'
+  },
+  build: {
+    outDir: 'dist'
   }
 })
