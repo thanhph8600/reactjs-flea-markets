@@ -9,6 +9,7 @@ import { infoUserContext } from "../../../hook/admin/contexts"
 import requestApi from "../../../helper/api"
 import { toast } from "react-toastify"
 import io, { Socket } from 'socket.io-client';
+import { socketUrl } from "../../../config"
 
 const CheckoutWallet = () => {
     const { topic } = useParams()
@@ -144,7 +145,7 @@ const SubmitCheckout = ({handleSubmit, wallet, price}: {
         }
     };
     useEffect(() => {
-        const newSocket = io('ws://localhost:3000');
+        const newSocket = io(socketUrl);
         newSocket.on('connect', () => {
             setSocket(newSocket);
         });

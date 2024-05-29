@@ -6,6 +6,7 @@ import requestApi from "../../../helper/api";
 import { useNavigate } from "react-router-dom";
 import { infoUserContext } from "../../../hook/admin/contexts";
 import { LoaderContex } from "../../../hook/admin/contexts/loader";
+import { apiUrl, socketUrl } from "../../../config";
 
 const LoginGoogle = () => {
   const [socket, setSocket] = useState<Socket>()
@@ -13,7 +14,7 @@ const LoginGoogle = () => {
   const { setInfoUser } = useContext(infoUserContext);
   const { setLoader } = useContext(LoaderContex);
   useEffect(() => {
-    const newSocket = io('ws://localhost:3000');
+    const newSocket = io(socketUrl);
     newSocket.on('connect', () => {
       setSocket(newSocket);
     });
@@ -51,7 +52,7 @@ const LoginGoogle = () => {
     const left = (window.screen.width - width) / 2;
     const top = (window.screen.height - height) / 2;
     const options = `width=${width},height=${height},left=${left},top=${top}`;
-    const popupLogin =  window.open(process.env.GOOOGLE_URL_LOGIN || 'http://localhost:3000/google', '_blank', options);
+    const popupLogin =  window.open(apiUrl + 'google' || 'http://localhost:3000/google', '_blank', options);
     console.log(popupLogin);
     if(popupLogin){
       waitForWindowLoad(popupLogin)

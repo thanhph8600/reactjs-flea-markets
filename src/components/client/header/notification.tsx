@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hook'
 import { SelectLoadingNotification, updateIsNewNotification, updateIsWatchNotification } from '../../../redux/features/notification'
 import { useGetHistoryByIdWalletQuery, useGetWalletQuery } from '../../../redux/rtkQuery/walletRktQuery'
 import { useGetPurchaseOrderQuery, useGetSaleOrderQuery } from '../../../redux/rtkQuery/order'
+import { socketUrl } from '../../../config'
 
 const Notification = () => {
     const dispatch = useAppDispatch()
@@ -41,7 +42,7 @@ const Notification = () => {
         }
     },[loadingUpdateNotification, ])
     useEffect(() => {
-        const newSocket = io('ws://localhost:3000');
+        const newSocket = io(socketUrl);
         newSocket.on('connect', () => {
             setSocket(newSocket);
         });

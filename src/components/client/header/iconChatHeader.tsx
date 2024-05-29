@@ -5,6 +5,7 @@ import { infoUserContext } from "../../../hook/admin/contexts"
 import { useGetListRoomChatQuery } from "../../../redux/rtkQuery/messenger"
 import io, { Socket } from 'socket.io-client';
 import { Messenger } from "../../../util"
+import { socketUrl } from "../../../config"
 
 const IconChatHeader = () => {
     const [socket, setSocket] = useState<Socket>()
@@ -19,7 +20,7 @@ const IconChatHeader = () => {
     },[infoUser, isLoading, isSuccess, listRoomChat])
     
     useEffect(() => {
-        const newSocket = io('ws://localhost:3000');
+        const newSocket = io(socketUrl);
         newSocket.on('connect', () => {
             setSocket(newSocket);
         });

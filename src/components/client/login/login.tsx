@@ -92,8 +92,6 @@ const Login = () => {
   }
   return (
       <>
-                  {process.env.REACT_APP_API_URL}
-
           <div className="bg-gray-100 min-h-screen flex flex-col px-6 py-6 lg:px-8">
 
               <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md p-10 border bg-white shadow-md rounded-lg">

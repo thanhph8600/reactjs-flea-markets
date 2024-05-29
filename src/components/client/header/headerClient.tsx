@@ -25,7 +25,7 @@ const HeaderClient = () => {
             <Link to={"/"} className=" w-40">
               <img
                 className="w-full px-2"
-                src="../../public/image/logo.png"
+                src={'https://api-chotot-fake.onrender.com/uploads/logo.png'}
                 alt=""
               />
             </Link>

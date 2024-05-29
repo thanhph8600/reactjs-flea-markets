@@ -9,6 +9,7 @@ import { IoArrowUndoSharp, IoCheckmarkDoneOutline } from "react-icons/io5";
 import ItemMessenger from "./itemMess/itemMessenger";
 import InputSendMessenger from "./itemMess/inputSendMessenger";
 import { Link } from "react-router-dom";
+import { socketUrl } from "../../../config";
 
 const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
     idCustomer: string,
@@ -54,9 +55,8 @@ const ListMessenger = ({ idCustomer, onHandleShowListRoom, infoUser }: {
         }
     }, [idCustomer, isLoading, isSuccess, listMess, infoCustomer])
 
-
     useEffect(() => {
-        const newSocket = io('ws://localhost:3000');
+        const newSocket = io(socketUrl||'ws://localhost:3000/');
         newSocket.on('connect', () => {
             console.log('Connected to WebSocket server');
             setSocket(newSocket);
